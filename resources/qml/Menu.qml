@@ -17,6 +17,14 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
+    Component.onCompleted:
+    {
+        // top-align toolbar (defined in Cura.qml)
+        toolbar.anchors.verticalCenter = undefined
+        toolbar.anchors.top = toolbar.parent.top
+        toolbar.anchors.topMargin = UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("default_margin").height
+    }
+
     UM.I18nCatalog
     {
         id: catalog
