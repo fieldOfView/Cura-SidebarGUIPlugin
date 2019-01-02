@@ -23,8 +23,8 @@ class SidebarGUIPlugin(Extension):
 
 
     def _onEngineCreated(self):
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "Menu.qml")
-        main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "Main.qml")
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMenu.qml")
+        main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMain.qml")
 
         prepare_stage = self._controller.getStage("PrepareStage")
         prepare_stage.addDisplayComponent("menu", sidebar_component_path)

@@ -123,7 +123,7 @@ Item
                 {
                     return UM.Controller.activeView.stageMenuComponent;
                 }
-                return "Legend.qml";
+                return "StageLegend.qml";
             }
         }
 
