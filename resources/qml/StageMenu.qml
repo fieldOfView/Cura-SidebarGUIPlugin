@@ -2,7 +2,6 @@
 // SidebarGUI is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
 import UM 1.3 as UM
@@ -117,6 +116,7 @@ Item
             id: viewPanel
             height: parent.height
             width: UM.Theme.getSize("layerview_menu_size").width
+            visible: false
             source:
             {
                 if(UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null)
@@ -127,12 +127,28 @@ Item
             }
         }
 
-        // Separator line
+        property string activeStage:
+        {
+            var stageString = UM.Controller.activeStage + "";
+            return stageString.substr(0, stageString.indexOf("("));
+        }
+
         Rectangle
         {
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("main_background")
+
+            children: [viewPanel.item.contentItem]
+            height: childrenRect.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
+            width: childrenRect.width + UM.Theme.getSize("default_margin").width
+            y: viewPanel.height + UM.Theme.getSize("wide_lining").height
+        }
+
+        Item
+        {
             height: parent.height
-            width: UM.Theme.getSize("default_lining").width
-            color: UM.Theme.getColor("lining")
+            width: UM.Theme.getSize("default_margin").width
         }
 
         Item
