@@ -12,10 +12,24 @@ import QtGraphicalEffects 1.0 // For the dropshadow
 
 Item
 {
-    id: base
+    id: stageMenu
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
+
+    Connections
+    {
+        target: printSetupSelector
+        onExpandedChanged:
+        {
+            var rect = Qt.rect(0, 0, 1, 1);
+            if(printSetupSelector.expanded)
+            {
+                rect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0);
+            }
+            base.viewportRect = rect;
+        }
+    }
 
     Component.onCompleted:
     {
