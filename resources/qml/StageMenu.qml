@@ -16,26 +16,15 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    Connections
-    {
-        target: printSetupSelector
-        onExpandedChanged:
-        {
-            var rect = Qt.rect(0, 0, 1, 1);
-            if(printSetupSelector.expanded)
-            {
-                rect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0);
-            }
-            base.viewportRect = rect;
-        }
-    }
-
     Component.onCompleted:
     {
         // top-align toolbar (defined in Cura.qml)
         toolbar.anchors.verticalCenter = undefined
         toolbar.anchors.top = toolbar.parent.top
         toolbar.anchors.topMargin = UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("default_margin").height
+
+        // compensate viewport for full-height sidebar
+        base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
     }
 
     UM.I18nCatalog
@@ -151,13 +140,29 @@ Item
             width: UM.Theme.getSize("default_margin").width
         }
 
-        Item
+        Cura.RoundedRectangle
         {
             id: printSetupSelectorItem
+
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("main_background")
+
+            cornerSide: Cura.RoundedRectangle.Direction.Left
+            radius: UM.Theme.getSize("default_radius").width
+
             // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
             // a stage switch is done.
-            children: [printSetupSelector]
-            height: childrenRect.height
+            Column
+            {
+                id: settingsViewContainer
+                children: [
+                    printSetupSelector.contentItem
+                ]
+                height: childrenRect.height
+                width: UM.Theme.getSize("print_setup_widget").width - UM.Theme.getSize("default_margin").width
+            }
+            height: base.height - stageMenu.y
             width: childrenRect.width
         }
     }
