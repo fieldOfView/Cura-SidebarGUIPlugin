@@ -17,14 +17,6 @@ Cura.ExpandableComponent
 
     contentHeaderTitle: catalog.i18nc("@label", "Legend")
 
-    Connections
-    {
-        target: UM.Preferences
-        onPreferenceChanged:
-        {
-        }
-    }
-
     headerItem: Item
     {
         Label
@@ -43,6 +35,7 @@ Cura.ExpandableComponent
     {
         id: viewSettings
         width: UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("layerview_row_spacing").height
 
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
@@ -51,17 +44,97 @@ Cura.ExpandableComponent
             width = UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
         }
 
-        Label
+        property string activeView:
         {
-            id: compatibilityModeLabel
-            text: catalog.i18nc("@label", "TODO: add legend")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            height: UM.Theme.getSize("layerview_row").height
-            width: parent.width
-            renderType: Text.NativeRendering
+            var viewString = UM.Controller.activeView + "";
+            return viewString.substr(0, viewString.indexOf("("));
         }
 
+        CheckBox
+        {
+            id: solidViewCheckBox
+            checked: parent.activeView == "SolidView"
+            onClicked:
+            {
+                if(checked)
+                {
+                    UM.Controller.setActiveView("SolidView")
+                }
+            }
+            text: catalog.i18nc("@label", "Normal view")
+            style: UM.Theme.styles.checkbox
+            width: parent.width
+            exclusiveGroup: viewGroup
+        }
+
+        CheckBox
+        {
+            id: xrayViewCheckBox
+            checked: parent.activeView == "XRayView"
+            onClicked:
+            {
+                if(checked)
+                {
+                    UM.Controller.setActiveView("XRayView")
+                }
+            }
+            text: catalog.i18nc("@label", "X-Ray view")
+            style: UM.Theme.styles.checkbox
+            width: parent.width
+            exclusiveGroup: viewGroup
+        }
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Requires overhang")
+            visible: parent.activeView == "SolidView"
+
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                width: UM.Theme.getSize("layerview_legend_size").width
+                height: UM.Theme.getSize("layerview_legend_size").height
+
+                color: UM.Theme.getColor("model_overhang")
+
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("lining")
+            }
+        }
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Model error")
+            visible: parent.activeView == "XRayView"
+
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                width: UM.Theme.getSize("layerview_legend_size").width
+                height: UM.Theme.getSize("layerview_legend_size").height
+
+                color: UM.Theme.getColor("xray_error")
+
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("lining")
+            }
+        }
+
+        ExclusiveGroup { id: viewGroup }
         Item  // Spacer
         {
             height: UM.Theme.getSize("narrow_margin").width
