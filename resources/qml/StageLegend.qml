@@ -86,7 +86,7 @@ Cura.ExpandableComponent
 
         Label
         {
-            text: catalog.i18nc("@label", "Requires overhang")
+            text: catalog.i18nc("@label", "Overhang")
             visible: parent.activeView == "SolidView"
 
             height: UM.Theme.getSize("layerview_row").height
