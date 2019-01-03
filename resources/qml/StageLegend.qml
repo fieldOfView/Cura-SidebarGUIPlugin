@@ -56,7 +56,7 @@ Cura.ExpandableComponent
             checked: parent.activeView == "SolidView"
             onClicked:
             {
-                if(checked)
+                if(checked && parent.activeView != "SolidView")
                 {
                     UM.Controller.setActiveView("SolidView")
                 }
@@ -73,7 +73,7 @@ Cura.ExpandableComponent
             checked: parent.activeView == "XRayView"
             onClicked:
             {
-                if(checked)
+                if(checked && parent.activeView != "XRayView")
                 {
                     UM.Controller.setActiveView("XRayView")
                 }

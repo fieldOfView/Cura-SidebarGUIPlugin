@@ -45,6 +45,11 @@ Item
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
+
+        var mainContentItem = base.contentItem.children[0].children[3]
+        mainContentItem.children[4].visible = false //  view orientation controls
+        mainContentItem.children[4].height = 0
+        mainContentItem.children[4].margins = 0
     }
 
     UM.I18nCatalog
@@ -121,6 +126,12 @@ Item
         width: childrenRect.width
         height: parent.height
 
+        property string activeStage:
+        {
+            var stageString = UM.Controller.activeStage + "";
+            return stageString.substr(0, stageString.indexOf("("));
+        }
+
         Loader
         {
             id: viewPanel
@@ -137,10 +148,12 @@ Item
             }
         }
 
-        property string activeStage:
-        {
-            var stageString = UM.Controller.activeStage + "";
-            return stageString.substr(0, stageString.indexOf("("));
+        Item {
+            visible: false
+            Cura.ViewOrientationControls{
+                id: viewOrientationControls
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
 
         Rectangle
@@ -150,7 +163,17 @@ Item
             color: UM.Theme.getColor("main_background")
             radius: UM.Theme.getSize("default_radius").width
 
-            children: [viewPanel.item.contentItem]
+            Column
+            {
+                spacing: UM.Theme.getSize("thin_margin").height
+                children:
+                [
+                    viewOrientationControls,
+                    viewPanel.item.contentItem
+                ]
+                anchors.top: parent.top
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+            }
             height: childrenRect.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("layerview_menu_size").width
             y: viewPanel.height + UM.Theme.getSize("wide_lining").height
