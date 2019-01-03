@@ -19,6 +19,7 @@ Item
     Component.onCompleted:
     {
         // top-align toolbar (defined in Cura.qml)
+        toolbar.visible = true
         toolbar.anchors.verticalCenter = undefined
         toolbar.anchors.top = toolbar.parent.top
         toolbar.anchors.topMargin = UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("default_margin").height
@@ -36,7 +37,7 @@ Item
 
         printSetupContent.children[0].height = undefined // id: contents
         printSetupContent.children[0].anchors.fill = printSetupContent
-        printSetupContent.children[0].anchors.bottomMargin = UM.Theme.getSize("default_lining").height
+        printSetupContent.children[0].anchors.bottomMargin = 2 * UM.Theme.getSize("default_lining").height
 
         var customPrintSetup = printSetupContent.children[0].children[1]
         customPrintSetup.height = undefined
@@ -49,7 +50,7 @@ Item
         var mainContentItem = base.contentItem.children[0].children[3]
         mainContentItem.children[4].visible = false //  view orientation controls
         mainContentItem.children[4].height = 0
-        mainContentItem.children[4].margins = 0
+        mainContentItem.children[4].anchors.margins = 0
     }
 
     UM.I18nCatalog
@@ -120,7 +121,7 @@ Item
     }
 
     // Item to ensure that all of the buttons are nicely centered.
-    Row
+    Item
     {
         anchors.right: parent.right
         width: childrenRect.width
@@ -177,12 +178,8 @@ Item
             height: childrenRect.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("layerview_menu_size").width
             y: viewPanel.height + UM.Theme.getSize("wide_lining").height
-        }
-
-        Item
-        {
-            height: parent.height
-            width: UM.Theme.getSize("default_margin").width
+            anchors.right: printSetupSelectorItem.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         Cura.RoundedRectangle
@@ -196,6 +193,20 @@ Item
             cornerSide: Cura.RoundedRectangle.Direction.Left
             radius: UM.Theme.getSize("default_radius").width
 
+            Column
+            {
+                id: settingsHeader
+                width: parent.width
+
+                // TODO: add
+                //   custom/recommended switch (*)
+                //   global profile selection
+                //   extruder tabs
+                //   material/variant selection
+                //
+                //   *: in both custom/recommended mode
+            }
+
             // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
             // a stage switch is done.
             Item
@@ -204,11 +215,24 @@ Item
                 children: [
                     printSetupSelector.contentItem
                 ]
-                height: parent.height
-                width: UM.Theme.getSize("print_setup_widget").width
+                anchors
+                {
+                    top: settingsHeader.bottom
+                    bottom: parent.bottom
+                }
+                width: parent.width
             }
-            height: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y
-            width: settingsViewContainer.width
+            anchors.top: parent.top
+            anchors.bottom: bottomRight.bottom
+            anchors.right: bottomRight.right
+            width: UM.Theme.getSize("print_setup_widget").width
+        }
+
+        Item
+        {
+            id: bottomRight
+            anchors.right: parent.right
+            y: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y - height
         }
     }
 }
