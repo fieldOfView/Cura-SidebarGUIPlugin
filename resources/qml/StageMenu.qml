@@ -24,6 +24,15 @@ Item
         toolbar.anchors.top = toolbar.parent.top
         toolbar.anchors.topMargin = UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("default_margin").height
 
+        // hide view orientation controls (shown them in viewpanel instead)
+        viewOrientationControls.visible = false
+        viewOrientationControls.height = 0
+        viewOrientationControls.anchors.margins = 0
+
+        // hide default action panel widget
+        var actionPanelWidget = base.contentItem.children[0].children[3].children[5]
+        actionPanelWidget.visible = false
+
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
 
@@ -46,11 +55,6 @@ Item
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
-
-        var mainContentItem = base.contentItem.children[0].children[3]
-        mainContentItem.children[4].visible = false //  view orientation controls
-        mainContentItem.children[4].height = 0
-        mainContentItem.children[4].anchors.margins = 0
     }
 
     UM.I18nCatalog
@@ -151,8 +155,8 @@ Item
 
         Item {
             visible: false
-            Cura.ViewOrientationControls{
-                id: viewOrientationControls
+            Cura.ViewOrientationControls {
+                id: viewPanelOrientationControls
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
@@ -169,7 +173,7 @@ Item
                 spacing: UM.Theme.getSize("thin_margin").height
                 children:
                 [
-                    viewOrientationControls,
+                    viewPanelOrientationControls,
                     viewPanel.item.contentItem
                 ]
                 anchors.top: parent.top
@@ -222,10 +226,39 @@ Item
                 }
                 width: parent.width
             }
-            anchors.top: parent.top
+            anchors
+            {
+                top: parent.top
+                bottom: actionRow.top
+                bottomMargin: UM.Theme.getSize("thin_margin").height
+                right: bottomRight.right
+            }
+            width: UM.Theme.getSize("print_setup_widget").width
+        }
+
+        Cura.RoundedRectangle
+        {
+            id: actionRow
+
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("main_background")
+
+            cornerSide: Cura.RoundedRectangle.Direction.Left
+            radius: UM.Theme.getSize("default_radius").width
+
+            Cura.ActionPanelWidget
+            {
+                id: actionPanelWidget
+                visible: CuraApplication.platformActivity
+                width: parent.width
+                anchors.bottom: parent.bottom
+            }
+
             anchors.bottom: bottomRight.bottom
             anchors.right: bottomRight.right
             width: UM.Theme.getSize("print_setup_widget").width
+            height: CuraApplication.platformActivity ? actionPanelWidget.height : 0
         }
 
         Item
