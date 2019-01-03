@@ -36,10 +36,15 @@ Item
 
         printSetupContent.children[0].height = undefined // id: contents
         printSetupContent.children[0].anchors.fill = printSetupContent
+        printSetupContent.children[0].anchors.bottomMargin = UM.Theme.getSize("default_lining").height
 
         var customPrintSetup = printSetupContent.children[0].children[1]
         customPrintSetup.height = undefined
         customPrintSetup.anchors.fill = customPrintSetup.parent
+
+        customPrintSetup.children[1].visible = false // extruder tabs
+        customPrintSetup.children[0].visible = false // profile selector
+        customPrintSetup.children[0].height = 0
     }
 
     UM.I18nCatalog
