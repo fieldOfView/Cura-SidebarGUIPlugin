@@ -25,6 +25,9 @@ Item
 
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
+
+        printSetupSelector.contentItem.children[1].visible = false
+        printSetupSelector.contentItem.children[2].visible = false
     }
 
     UM.I18nCatalog
@@ -59,13 +62,14 @@ Item
             }
         }
 
-        background: Rectangle
+        background: Cura.RoundedRectangle
         {
             id: background
             height: UM.Theme.getSize("stage_menu").height
             width: UM.Theme.getSize("stage_menu").height
 
             radius: UM.Theme.getSize("default_radius").width
+            cornerSide: Cura.RoundedRectangle.Direction.Right
             color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
         }
 
@@ -127,10 +131,11 @@ Item
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
             color: UM.Theme.getColor("main_background")
+            radius: UM.Theme.getSize("default_radius").width
 
             children: [viewPanel.item.contentItem]
             height: childrenRect.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
-            width: childrenRect.width + UM.Theme.getSize("default_margin").width
+            width: UM.Theme.getSize("layerview_menu_size").width
             y: viewPanel.height + UM.Theme.getSize("wide_lining").height
         }
 
@@ -160,10 +165,10 @@ Item
                     printSetupSelector.contentItem
                 ]
                 height: childrenRect.height
-                width: UM.Theme.getSize("print_setup_widget").width - UM.Theme.getSize("default_margin").width
+                width: UM.Theme.getSize("print_setup_widget").width
             }
             height: base.height - stageMenu.y
-            width: childrenRect.width
+            width: settingsViewContainer.width
         }
     }
 }
