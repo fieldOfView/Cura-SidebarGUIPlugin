@@ -26,8 +26,20 @@ Item
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
 
-        printSetupSelector.contentItem.children[1].visible = false
-        printSetupSelector.contentItem.children[2].visible = false
+        // make settingview take up available height
+        var printSetupContent = printSetupSelector.contentItem
+        printSetupContent.children[1].visible = false // separator line
+        printSetupContent.children[2].visible = false // recommended/custom button row
+
+        printSetupContent.height = undefined
+        printSetupContent.anchors.fill = printSetupContent.parent
+
+        printSetupContent.children[0].height = undefined // id: contents
+        printSetupContent.children[0].anchors.fill = printSetupContent
+
+        var customPrintSetup = printSetupContent.children[0].children[1]
+        customPrintSetup.height = undefined
+        customPrintSetup.anchors.fill = customPrintSetup.parent
     }
 
     UM.I18nCatalog
@@ -158,16 +170,16 @@ Item
 
             // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
             // a stage switch is done.
-            Column
+            Item
             {
                 id: settingsViewContainer
                 children: [
                     printSetupSelector.contentItem
                 ]
-                height: childrenRect.height
+                height: parent.height
                 width: UM.Theme.getSize("print_setup_widget").width
             }
-            height: base.height - stageMenu.y
+            height: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y
             width: settingsViewContainer.width
         }
     }
