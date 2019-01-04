@@ -14,6 +14,9 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
+    property var messageStack
+    property var stagesListContainer
+
     Component.onCompleted:
     {
         // top-align toolbar (defined in Cura.qml)
@@ -32,13 +35,13 @@ Item
         actionPanelWidget.visible = false
 
         // adjust message stack position for sidebar
-        var messageStack = base.contentItem.children[0].children[3].children[8]
+        messageStack = base.contentItem.children[0].children[3].children[8]
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
 
         // adjust stages menu position for sidebar
-        var stagesListContainer = mainWindowHeader.children[1]
+        stagesListContainer = mainWindowHeader.children[1]
         stagesListContainer.anchors.horizontalCenter = undefined
         stagesListContainer.anchors.left = stagesListContainer.parent.left
         stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
@@ -65,6 +68,19 @@ Item
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
+    }
+
+    Connections
+    {
+        target: base
+        onWidthChanged:
+        {
+            // adjust message stack position for sidebar
+            messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+
+            // adjust stages menu position for sidebar
+            stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+        }
     }
 
     UM.I18nCatalog
@@ -187,7 +203,7 @@ Item
         height: viewOptions.height + (activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("layerview_menu_size").width
 
-        y: UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("wide_lining").height
+        y: Math.floor(UM.Theme.getSize("stage_menu").height / 2) + UM.Theme.getSize("default_margin").height
         anchors.right: printSetupSidebar.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
     }
