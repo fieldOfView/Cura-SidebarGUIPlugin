@@ -7,8 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
-
 Item
 {
     id: stageMenu
@@ -38,6 +36,12 @@ Item
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+
+        // adjust stages menu position for sidebar
+        var stagesListContainer = mainWindowHeader.children[1]
+        stagesListContainer.anchors.horizontalCenter = undefined
+        stagesListContainer.anchors.left = stagesListContainer.parent.left
+        stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
 
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
@@ -74,8 +78,9 @@ Item
         id: openFileButton
 
         anchors.left: parent.left
-        height: UM.Theme.getSize("stage_menu").height
-        width: UM.Theme.getSize("stage_menu").height
+        anchors.leftMargin: 0
+        height: UM.Theme.getSize("button").height
+        width: height
         onClicked: Cura.Actions.open.trigger()
         hoverEnabled: true
 
@@ -104,20 +109,8 @@ Item
             radius: UM.Theme.getSize("default_radius").width
             cornerSide: Cura.RoundedRectangle.Direction.Right
             color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-        }
-
-        DropShadow
-        {
-            id: shadow
-            // Don't blur the shadow
-            radius: 0
-            anchors.fill: background
-            source: background
-            verticalOffset: 2
-            visible: true
-            color: UM.Theme.getColor("action_button_shadow")
-            // Should always be drawn behind the background.
-            z: background.z - 1
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
         }
     }
 
@@ -126,8 +119,17 @@ Item
         id: machineSelection
         headerCornerSide: Cura.RoundedRectangle.Direction.All
         width: UM.Theme.getSize("machine_selector_widget").width
-        height: parent.height
-        anchors.centerIn: parent
+        height: UM.Theme.getSize("main_window_header_button").height
+        anchors.left: printSetupSidebar.left
+        y: - Math.floor((UM.Theme.getSize("main_window_header").height + height) / 2)
+
+        Component.onCompleted: {
+            machineSelection.children[1].visible = false // remove shadow
+            var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
+            // adjust header margins, because the height is smaller than designed
+            machineSelectionHeader.anchors.topMargin = 0
+            machineSelectionHeader.anchors.bottomMargin = 0
+        }
     }
 
     Item {
@@ -155,6 +157,12 @@ Item
         }
     }
 
+    property string activeStage:
+    {
+        var stageString = UM.Controller.activeStage + "";
+        return stageString.substr(0, stageString.indexOf("("));
+    }
+
     Rectangle
     {
         id: viewOptionsFloater
@@ -176,17 +184,17 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
         }
 
-        height: viewOptions.height + UM.Theme.getSize("default_margin").height
+        height: viewOptions.height + (activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("layerview_menu_size").width
 
         y: UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("wide_lining").height
-        anchors.right: printSetupSelectorItem.left
+        anchors.right: printSetupSidebar.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
     }
 
     Cura.RoundedRectangle
     {
-        id: printSetupSelectorItem
+        id: printSetupSidebar
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
