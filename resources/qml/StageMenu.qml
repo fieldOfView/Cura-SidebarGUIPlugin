@@ -170,6 +170,7 @@ Item
 
             Column
             {
+                id: viewPanelItems
                 spacing: UM.Theme.getSize("thin_margin").height
                 children:
                 [
@@ -179,7 +180,7 @@ Item
                 anchors.top: parent.top
                 anchors.topMargin: UM.Theme.getSize("default_margin").height
             }
-            height: childrenRect.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
+            height: viewPanelItems.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("layerview_menu_size").width
             y: viewPanel.height + UM.Theme.getSize("wide_lining").height
             anchors.right: printSetupSelectorItem.left

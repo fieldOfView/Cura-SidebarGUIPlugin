@@ -41,7 +41,10 @@ Cura.ExpandableComponent
         Component.onCompleted:
         {
             height = implicitHeight
-            width = UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
+        }
+        onActiveViewChanged:
+        {
+            height = undefined
         }
 
         property string activeView:
@@ -111,7 +114,43 @@ Cura.ExpandableComponent
 
         Label
         {
-            text: catalog.i18nc("@label", "Model error")
+            text: catalog.i18nc("@label", "Normal geometry")
+            visible: parent.activeView == "XRayView"
+
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                width: UM.Theme.getSize("layerview_legend_size").width
+                height: UM.Theme.getSize("layerview_legend_size").height
+
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("lining")
+
+                LinearGradient
+                {
+                    anchors.fill: parent
+                    anchors.margins: UM.Theme.getSize("default_lining").width
+                    start: Qt.point(0, 0)
+                    end: Qt.point(width, 0)
+                    gradient: Gradient
+                    {
+                        GradientStop { position: 0.0; color: UM.Theme.getColor("xray") }
+                        GradientStop { position: 1.0; color: "white" }
+                    }
+                }
+            }
+        }
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Geometry error")
             visible: parent.activeView == "XRayView"
 
             height: UM.Theme.getSize("layerview_row").height
