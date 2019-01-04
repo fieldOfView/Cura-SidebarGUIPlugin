@@ -130,25 +130,20 @@ Item
         anchors.centerIn: parent
     }
 
-    // Item to ensure that all of the buttons are nicely centered.
-    Item
-    {
-        anchors.right: parent.right
-        width: childrenRect.width
-        height: parent.height
+    Item {
+        // hidden items
+        visible: false
 
-        property string activeStage:
-        {
-            var stageString = UM.Controller.activeStage + "";
-            return stageString.substr(0, stageString.indexOf("("));
+        Cura.ViewOrientationControls {
+            id: viewPanelOrientationControls
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Loader
         {
-            id: viewPanel
+            id: viewMenuComponent
             height: parent.height
             width: UM.Theme.getSize("layerview_menu_size").width
-            visible: false
             source:
             {
                 if(UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null)
@@ -158,121 +153,116 @@ Item
                 return "StageLegend.qml";
             }
         }
+    }
 
-        Item {
-            visible: false
-            Cura.ViewOrientationControls {
-                id: viewPanelOrientationControls
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-        }
+    Rectangle
+    {
+        id: viewOptionsFloater
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("main_background")
+        radius: UM.Theme.getSize("default_radius").width
 
-        Rectangle
+        Column
         {
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            color: UM.Theme.getColor("main_background")
-            radius: UM.Theme.getSize("default_radius").width
-
-            Column
-            {
-                id: viewPanelItems
-                spacing: UM.Theme.getSize("thin_margin").height
-                children:
-                [
-                    viewPanelOrientationControls,
-                    viewPanel.item.contentItem
-                ]
-                anchors.top: parent.top
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-            }
-            height: viewPanelItems.height + (parent.activeStage != "PrepareStage" ? 2 : 1) * UM.Theme.getSize("default_margin").height
-            width: UM.Theme.getSize("layerview_menu_size").width
-            y: viewPanel.height + UM.Theme.getSize("wide_lining").height
-            anchors.right: printSetupSelectorItem.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            id: viewOptions
+            spacing: UM.Theme.getSize("thin_margin").height
+            children:
+            [
+                viewPanelOrientationControls,
+                viewMenuComponent.item.contentItem
+            ]
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
         }
 
-        Cura.RoundedRectangle
+        height: viewOptions.height + UM.Theme.getSize("default_margin").height
+        width: UM.Theme.getSize("layerview_menu_size").width
+
+        y: UM.Theme.getSize("stage_menu").height + UM.Theme.getSize("wide_lining").height
+        anchors.right: printSetupSelectorItem.left
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+    }
+
+    Cura.RoundedRectangle
+    {
+        id: printSetupSelectorItem
+
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("main_background")
+
+        cornerSide: Cura.RoundedRectangle.Direction.Left
+        radius: UM.Theme.getSize("default_radius").width
+
+        Column
         {
-            id: printSetupSelectorItem
+            id: settingsHeader
+            width: parent.width
 
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            color: UM.Theme.getColor("main_background")
-
-            cornerSide: Cura.RoundedRectangle.Direction.Left
-            radius: UM.Theme.getSize("default_radius").width
-
-            Column
-            {
-                id: settingsHeader
-                width: parent.width
-
-                // TODO: add
-                //   custom/recommended switch (*)
-                //   global profile selection
-                //   extruder tabs
-                //   material/variant selection
-                //
-                //   *: in both custom/recommended mode
-            }
-
-            // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-            // a stage switch is done.
-            Item
-            {
-                id: settingsViewContainer
-                children: [
-                    printSetupSelector.contentItem
-                ]
-                anchors
-                {
-                    top: settingsHeader.bottom
-                    bottom: parent.bottom
-                }
-                width: parent.width
-            }
-            anchors
-            {
-                top: parent.top
-                bottom: actionRow.top
-                bottomMargin: UM.Theme.getSize("thin_margin").height
-                right: bottomRight.right
-            }
-            width: UM.Theme.getSize("print_setup_widget").width
+            // TODO: add
+            //   custom/recommended switch (*)
+            //   global profile selection
+            //   extruder tabs
+            //   material/variant selection
+            //
+            //   *: in both custom/recommended mode
         }
 
-        Cura.RoundedRectangle
-        {
-            id: actionRow
-
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            color: UM.Theme.getColor("main_background")
-
-            cornerSide: Cura.RoundedRectangle.Direction.Left
-            radius: UM.Theme.getSize("default_radius").width
-
-            Cura.ActionPanelWidget
-            {
-                id: actionPanelWidget
-                visible: CuraApplication.platformActivity
-                width: parent.width
-                anchors.bottom: parent.bottom
-            }
-
-            anchors.bottom: bottomRight.bottom
-            anchors.right: bottomRight.right
-            width: UM.Theme.getSize("print_setup_widget").width
-            height: CuraApplication.platformActivity ? actionPanelWidget.height : 0
-        }
-
+        // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+        // a stage switch is done.
         Item
         {
-            id: bottomRight
-            anchors.right: parent.right
-            y: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y - height
+            id: settingsViewContainer
+            children: [
+                printSetupSelector.contentItem
+            ]
+            anchors
+            {
+                top: settingsHeader.bottom
+                bottom: parent.bottom
+            }
+            width: parent.width
         }
+        anchors
+        {
+            top: parent.top
+            bottom: actionRow.top
+            bottomMargin: UM.Theme.getSize("thin_margin").height
+            right: bottomRight.right
+        }
+        width: UM.Theme.getSize("print_setup_widget").width
+    }
+
+    Cura.RoundedRectangle
+    {
+        id: actionRow
+
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("main_background")
+
+        cornerSide: Cura.RoundedRectangle.Direction.Left
+        radius: UM.Theme.getSize("default_radius").width
+
+        Cura.ActionPanelWidget
+        {
+            id: actionPanelWidget
+            visible: CuraApplication.platformActivity
+            width: parent.width
+            anchors.bottom: parent.bottom
+        }
+
+        anchors.bottom: bottomRight.bottom
+        anchors.right: bottomRight.right
+        width: UM.Theme.getSize("print_setup_widget").width
+        height: CuraApplication.platformActivity ? actionPanelWidget.height : 0
+    }
+
+    Item
+    {
+        id: bottomRight
+        anchors.right: parent.right
+        y: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y - height
     }
 }
