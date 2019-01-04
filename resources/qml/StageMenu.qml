@@ -33,6 +33,12 @@ Item
         var actionPanelWidget = base.contentItem.children[0].children[3].children[5]
         actionPanelWidget.visible = false
 
+        // adjust message stack position for sidebar
+        var messageStack = base.contentItem.children[0].children[3].children[8]
+        messageStack.anchors.horizontalCenter = undefined
+        messageStack.anchors.left = messageStack.parent.left
+        messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
 
