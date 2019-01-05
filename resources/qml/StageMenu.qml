@@ -68,6 +68,7 @@ Item
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
+        customPrintSetup.children[2].anchors.rightMargin = 0
     }
 
     Connections
