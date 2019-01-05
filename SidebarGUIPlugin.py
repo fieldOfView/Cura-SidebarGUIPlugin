@@ -25,6 +25,7 @@ class SidebarGUIPlugin(Extension):
     def _onEngineCreated(self):
         sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMenu.qml")
         main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMain.qml")
+        monitor_menu_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "MonitorStageMenu.qml")
 
         prepare_stage = self._controller.getStage("PrepareStage")
         prepare_stage.addDisplayComponent("menu", sidebar_component_path)
@@ -33,6 +34,9 @@ class SidebarGUIPlugin(Extension):
         preview_stage = self._controller.getStage("PreviewStage")
         preview_stage.addDisplayComponent("menu", sidebar_component_path)
         preview_stage.addDisplayComponent("main", main_component_path)
+
+        monitor_stage = self._controller.getStage("MonitorStage")
+        monitor_stage.addDisplayComponent("menu", monitor_menu_component_path)
 
 
     def _onStageChanged(self):
