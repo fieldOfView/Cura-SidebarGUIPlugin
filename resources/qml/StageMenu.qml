@@ -62,6 +62,7 @@ Item
         printSetupContent.children[0].anchors.bottomMargin = 2 * UM.Theme.getSize("default_lining").height
 
         var customPrintSetup = printSetupContent.children[0].children[1]
+        customPrintSetup.padding = UM.Theme.getSize("narrow_margin").width - UM.Theme.getSize("default_lining").width
         customPrintSetup.height = undefined
         customPrintSetup.anchors.fill = customPrintSetup.parent
 
@@ -225,13 +226,41 @@ Item
             id: settingsHeader
             width: parent.width
 
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            Item
+            {
+                width: parent.width
+                height: childrenRect.height
+
+                Cura.GlobalProfileSelector
+                {
+                    id: globalProfileSelector
+                    visible: printSetupSelector.contentItem.currentModeIndex == Cura.PrintSetupSelectorContents.Mode.Custom
+                    anchors
+                    {
+                        right: modeToggleSwitch.left
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                    }
+
+                    Component.onCompleted:
+                    {
+                        globalProfileSelector.children[0].visible = false
+                    }
+                }
+
+                ModeToggleSwitch
+                {
+                    id: modeToggleSwitch
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+
             // TODO: add
-            //   custom/recommended switch (*)
-            //   global profile selection
             //   extruder tabs
             //   material/variant selection
-            //
-            //   *: in both custom/recommended mode
         }
 
         // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
