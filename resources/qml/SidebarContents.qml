@@ -29,7 +29,7 @@ Cura.RoundedRectangle
         Item
         {
             width: parent.width
-            height: childrenRect.height
+            height: childrenRect.height + UM.Theme.getSize("default_margin").height
 
             Cura.GlobalProfileSelector
             {
@@ -55,9 +55,47 @@ Cura.RoundedRectangle
             }
         }
 
-        // TODO: add
-        //   extruder tabs
-        //   material/variant selection
+        Item
+        {
+            width: parent.width
+            height: childrenRect.height
+
+            Rectangle
+            {
+                width: parent.width
+                anchors.bottom: extruderSelector.bottom
+                height: UM.Theme.getSize("default_lining").height
+                color: UM.Theme.getColor("lining")
+            }
+            ExtruderTabs
+            {
+                id: extruderSelector
+
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    right: showExtruderConfigurationPanel.left
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+            UM.RecolorImage
+            {
+                id: showExtruderConfigurationPanel
+                anchors
+                {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    rightMargin: UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("narrow_margin").width
+                }
+                source: UM.Theme.getIcon("pencil")
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                color: UM.Theme.getColor("setting_category_text")
+            }
+        }
+
+        // TODO: add material/variant selection
     }
 
     // This is a work around to prevent the printSetupSelector from having to be re-loaded every time

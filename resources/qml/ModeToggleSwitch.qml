@@ -45,7 +45,7 @@ Switch
         verticalAlignment: Text.AlignVCenter
         height: parent.height
         font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text_default")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
         leftPadding: modeToggleSwitch.indicator.width
     }
