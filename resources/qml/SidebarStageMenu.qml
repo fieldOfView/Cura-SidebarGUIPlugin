@@ -35,13 +35,13 @@ Item
         actionPanelWidget.visible = false
 
         // adjust message stack position for sidebar
-        messageStack = base.contentItem.children[0].children[3].children[8]
+        messageStack = base.contentItem.children[0].children[3].children[8] // declared as property above
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
 
         // adjust stages menu position for sidebar
-        stagesListContainer = mainWindowHeader.children[1]
+        stagesListContainer = mainWindowHeader.children[1] // declared as property above
         stagesListContainer.anchors.horizontalCenter = undefined
         stagesListContainer.anchors.left = stagesListContainer.parent.left
         stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
@@ -83,12 +83,6 @@ Item
             // adjust stages menu position for sidebar
             stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
         }
-    }
-
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
     }
 
     OpenFileButton {}

@@ -41,12 +41,6 @@ Item
         }
     }
 
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
-    }
-
     Cura.MachineSelector
     {
         id: machineSelection

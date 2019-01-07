@@ -43,7 +43,7 @@ Cura.RoundedRectangle
 
                 Component.onCompleted:
                 {
-                    globalProfileSelector.children[0].visible = false
+                    globalProfileSelector.children[0].visible = false // "Profile:" label
                 }
             }
 
