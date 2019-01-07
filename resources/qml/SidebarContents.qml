@@ -79,7 +79,8 @@ Cura.RoundedRectangle
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
             }
-            UM.RecolorImage
+
+            UM.SimpleButton
             {
                 id: showExtruderConfigurationPanel
                 anchors
@@ -88,14 +89,37 @@ Cura.RoundedRectangle
                     verticalCenter: parent.verticalCenter
                     rightMargin: UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("narrow_margin").width
                 }
-                source: UM.Theme.getIcon("pencil")
+                iconSource: UM.Theme.getIcon("pencil")
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 color: UM.Theme.getColor("setting_category_text")
+
+                onClicked: extruderConfiguration.visible = !extruderConfiguration.visible
             }
         }
 
-        // TODO: add material/variant selection
+        Item
+        {
+            id: extruderConfiguration
+            visible: false
+            width: parent.width
+            height: visible ? childrenRect.height : 0
+            children: [ configurationMenu.contentItem ]
+
+            Behavior on height { NumberAnimation { duration: 100 } }
+
+            Cura.ConfigurationMenu
+            {
+                id: configurationMenu
+                visible: false
+
+                Component.onCompleted:
+                {
+                    var customConfiguration = configurationMenu.contentItem.children[0].children[1];
+                    customConfiguration.children[2].visible = false // extruder tabs
+                }
+            }
+        }
     }
 
     // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
@@ -103,9 +127,7 @@ Cura.RoundedRectangle
     Item
     {
         id: settingsViewContainer
-        children: [
-            printSetupSelector.contentItem
-        ]
+        children: [ printSetupSelector.contentItem ]
         anchors
         {
             top: settingsHeader.bottom
