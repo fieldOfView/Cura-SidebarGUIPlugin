@@ -1,5 +1,5 @@
-# Copyright (c) 2018 fieldOfView
-# The SidebarGUI is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2019 fieldOfView
+# The SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import os.path
 from UM.Application import Application
@@ -23,7 +23,7 @@ class SidebarGUIPlugin(Extension):
 
 
     def _onEngineCreated(self):
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMenu.qml")
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "SidebarStageMenu.qml")
         main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMain.qml")
         monitor_menu_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "MonitorStageMenu.qml")
 

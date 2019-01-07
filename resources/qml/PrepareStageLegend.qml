@@ -1,15 +1,13 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2019 fieldOfView
+// SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.4
 import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.0 // for the linear gradient
 
 import UM 1.0 as UM
 import Cura 1.0 as Cura
-
 
 Cura.ExpandableComponent
 {
@@ -52,6 +50,8 @@ Cura.ExpandableComponent
             var viewString = UM.Controller.activeView + "";
             return viewString.substr(0, viewString.indexOf("("));
         }
+
+        ExclusiveGroup { id: viewGroup }
 
         CheckBox
         {
@@ -171,13 +171,6 @@ Cura.ExpandableComponent
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
             }
-        }
-
-        ExclusiveGroup { id: viewGroup }
-        Item  // Spacer
-        {
-            height: UM.Theme.getSize("narrow_margin").width
-            width: parent.width
         }
     }
 }

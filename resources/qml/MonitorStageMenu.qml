@@ -1,5 +1,5 @@
 // Copyright (c) 2018 fieldOfView
-// SidebarGUI is released under the terms of the AGPLv3 or higher.
+// SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
