@@ -66,6 +66,9 @@ Item
         customPrintSetup.height = undefined
         customPrintSetup.anchors.fill = customPrintSetup.parent
 
+        customPrintSetup.children[2].height = undefined // rectangle containing settingview
+        customPrintSetup.children[2].anchors.fill = customPrintSetup
+
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
