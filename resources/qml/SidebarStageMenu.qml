@@ -79,6 +79,9 @@ Item
         target: base
         onWidthChanged:
         {
+            // compensate viewport for full-height sidebar
+            base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
+
             // adjust message stack position for sidebar
             messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
 
