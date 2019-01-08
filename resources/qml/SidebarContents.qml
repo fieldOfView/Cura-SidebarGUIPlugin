@@ -58,7 +58,7 @@ Cura.RoundedRectangle
         Item
         {
             width: parent.width
-            height: childrenRect.height
+            height: extruderSelector.visible ? childrenRect.height : 0
 
             Rectangle
             {
@@ -66,6 +66,7 @@ Cura.RoundedRectangle
                 anchors.bottom: extruderSelector.bottom
                 height: UM.Theme.getSize("default_lining").height
                 color: UM.Theme.getColor("lining")
+                visible: extruderSelector.visible
             }
             ExtruderTabs
             {
@@ -95,6 +96,7 @@ Cura.RoundedRectangle
                 color: UM.Theme.getColor("setting_category_text")
 
                 onClicked: extruderConfiguration.visible = !extruderConfiguration.visible
+                visible: extruderSelector.visible
             }
         }
 
@@ -117,6 +119,18 @@ Cura.RoundedRectangle
                 {
                     var customConfiguration = configurationMenu.contentItem.children[0].children[1];
                     customConfiguration.children[2].visible = false // extruder tabs
+                }
+            }
+
+            Connections
+            {
+                target: extruderSelector
+                onVisibleChanged:
+                {
+                    if (!extruderSelector.visible)
+                    {
+                        extruderConfiguration.visible = false
+                    }
                 }
             }
         }
