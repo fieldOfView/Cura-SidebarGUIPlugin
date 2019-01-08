@@ -70,6 +70,8 @@ Item
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
         customPrintSetup.children[2].anchors.rightMargin = 0
+
+        headerBackground.height = mainWindowHeader.height + UM.Theme.getSize("default_margin").height
     }
 
     Connections
@@ -112,7 +114,7 @@ Item
         anchors.right: printSetupSidebar.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        y: Math.floor(UM.Theme.getSize("stage_menu").height / 2) + UM.Theme.getSize("default_margin").height
+        y: Math.floor(UM.Theme.getSize("stage_menu").height / 2)
     }
 
     SidebarContents

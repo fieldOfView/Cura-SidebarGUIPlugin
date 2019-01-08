@@ -20,7 +20,7 @@ Loader
             var pathSlider = item.children[0]
             pathSlider.anchors.horizontalCenter = undefined
             pathSlider.anchors.right = pathSlider.parent.right
-            pathSlider.anchors.rightMargin = UM.Theme.getSize("print_setup_widget").width + UM.Theme.getSize("default_margin").width;
+            pathSlider.anchors.rightMargin = UM.Theme.getSize("print_setup_widget").width + UM.Theme.getSize("default_margin").width
 
             var layerSlider = item.children[2]
             layerSlider.anchors.right = pathSlider.right
@@ -29,7 +29,7 @@ Loader
             layerSlider.anchors.top = undefined
             layerSlider.anchors.bottom = pathSlider.top
             layerSlider.anchors.bottomMargin = UM.Theme.getSize("default_margin").height
-            layerSlider.height = UM.Theme.getSize("slider_layerview_size").height
+            layerSlider.height = UM.Theme.getSize("slider_layerview_size").height - (pathSlider.height + UM.Theme.getSize("default_margin").height)
         }
     }
 }
