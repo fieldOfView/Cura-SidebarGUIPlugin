@@ -58,7 +58,7 @@ Cura.RoundedRectangle
         Item
         {
             width: parent.width
-            height: extruderSelector.visible ? childrenRect.height : 0
+            height: extruderSelector.visible ? extruderSelector.height : 0
 
             Rectangle
             {
