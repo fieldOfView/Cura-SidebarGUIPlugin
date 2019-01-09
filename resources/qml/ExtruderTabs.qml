@@ -73,7 +73,7 @@ UM.TabRow
                     {
                         left: variantLabel.visible ? variantLabel.right : extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
+                        right: configurationWarning.left
                         rightMargin: UM.Theme.getSize("default_margin").width
                     }
                 }
@@ -93,10 +93,29 @@ UM.TabRow
                     {
                         left: variantLabel.visible ? variantLabel.right : extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
+                        right: configurationWarning.left
                         rightMargin: UM.Theme.getSize("default_margin").width
                         top: brandNameLabel.bottom
                     }
+                }
+
+                UM.RecolorImage
+                {
+                    id: configurationWarning
+
+                    property var extruderStack: Cura.MachineManager.getExtruder(model.index)
+                    property bool valueWarning: !Cura.SidebarGUIPlugin.getExtruderHasQualityForMaterial(extruderStack)
+                    property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
+
+                    visible: valueWarning || valueError
+
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    source: valueError ? UM.Theme.getIcon("cross2") : UM.Theme.getIcon("warning")
+                    color: valueError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_warning_background")
+                    width: visible ? UM.Theme.getSize("section_icon").width : 0
+                    height: width
                 }
             }
             onClicked:

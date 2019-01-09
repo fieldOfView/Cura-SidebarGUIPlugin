@@ -7,6 +7,10 @@ from UM.Extension import Extension
 from UM.Resources import Resources
 
 from PyQt5.QtCore import QUrl
+from PyQt5.QtQml import qmlRegisterSingletonType
+
+from .SidebarGUIProxy import SidebarGUIProxy
+
 
 class SidebarGUIPlugin(Extension):
 
@@ -21,8 +25,12 @@ class SidebarGUIPlugin(Extension):
         self._controller.activeStageChanged.connect(self._onStageChanged)
         self._controller.activeViewChanged.connect(self._onViewChanged)
 
+        self._proxy = SidebarGUIProxy()
 
     def _onEngineCreated(self):
+        engine = Application.getInstance()._qml_engine
+        qmlRegisterSingletonType(SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy)
+
         sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "SidebarStageMenu.qml")
         main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMain.qml")
         monitor_menu_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "MonitorStageMenu.qml")
@@ -68,3 +76,9 @@ class SidebarGUIPlugin(Extension):
         else:
             if active_stage_id != "PrepareStage":
                 self._controller.setActiveStage("PrepareStage")
+
+
+    ##  Hackish way to ensure the proxy is already created, which ensures that the sidebargui.qml is already created
+    #   as this caused some issues.
+    def getProxy(self, engine, script_engine):
+        return self._proxy
