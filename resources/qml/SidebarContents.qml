@@ -77,7 +77,7 @@ Cura.RoundedRectangle
                     left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width + 5 * UM.Theme.getSize("default_lining").width
                     right: showExtruderConfigurationPanel.left
-                    rightMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_lining").width
                 }
             }
 
@@ -87,8 +87,8 @@ Cura.RoundedRectangle
                 anchors
                 {
                     right: parent.right
-                    verticalCenter: parent.verticalCenter
                     rightMargin: UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("narrow_margin").width
+                    verticalCenter: parent.verticalCenter
                 }
                 iconSource: extruderConfiguration.visible ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
                 width: UM.Theme.getSize("standard_arrow").width
@@ -161,6 +161,7 @@ Cura.RoundedRectangle
         anchors
         {
             top: settingsHeader.bottom
+            topMargin: UM.Theme.getSize("default_lining").height
             bottom: parent.bottom
         }
         width: parent.width
