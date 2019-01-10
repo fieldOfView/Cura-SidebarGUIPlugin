@@ -12,7 +12,8 @@ Button
     id: openFileButton
 
     anchors.left: parent.left
-    anchors.leftMargin: 0
+    anchors.leftMargin: - (base.width - printSetupSidebar.width) / 2
+
     height: UM.Theme.getSize("button").height
     width: height
     onClicked: Cura.Actions.open.trigger()
