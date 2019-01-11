@@ -74,7 +74,10 @@ Item
         customPrintSetup.children[0].height = 0
         customPrintSetup.children[2].anchors.rightMargin = 0
 
+        // tweak header height
         headerBackground.height = mainWindowHeader.height + UM.Theme.getSize("default_margin").height
+        main.anchors.top = main.parent.top
+        main.anchors.topMargin = UM.Theme.getSize("default_margin").height
     }
 
     Connections
