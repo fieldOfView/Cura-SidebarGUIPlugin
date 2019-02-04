@@ -35,7 +35,7 @@ Item
         actionPanelWidget.visible = false
 
         // adjust message stack position for sidebar
-        messageStack = base.contentItem.children[0].children[3].children[9] // declared as property above
+        messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
