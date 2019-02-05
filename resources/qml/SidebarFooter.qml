@@ -27,6 +27,25 @@ Cura.RoundedRectangle
         visible: CuraApplication.platformActivity
         width: parent.width
         anchors.bottom: parent.bottom
+
+        Component.onCompleted:
+        {
+            var actionPanelRect = actionPanelWidget.children[0];
+            var actionPanelAdditionals = actionPanelWidget.children[1];
+
+            actionPanelRect.border.width = 0;
+            actionPanelRect.color = "transparent";
+
+            actionPanelAdditionals.anchors.right = undefined;
+            actionPanelAdditionals.anchors.left = actionPanelAdditionals.parent.left;
+            actionPanelAdditionals.anchors.leftMargin = UM.Theme.getSize("thick_margin").width;
+            actionPanelAdditionals.anchors.bottomMargin = UM.Theme.getSize("thick_margin").height * 2 - UM.Theme.getSize("default_lining").height * 3;
+
+            actionPanelRect.width = undefined;
+            actionPanelRect.anchors.left = actionPanelAdditionals.right;
+            actionPanelRect.anchors.leftMargin = -UM.Theme.getSize("default_margin").width;
+            actionPanelRect.anchors.right = actionPanelRect.parent.right;
+        }
     }
 
     width: UM.Theme.getSize("print_setup_widget").width
