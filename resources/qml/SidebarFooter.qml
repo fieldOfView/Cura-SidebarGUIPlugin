@@ -28,6 +28,33 @@ Cura.RoundedRectangle
         width: parent.width
         anchors.bottom: parent.bottom
 
+        property string activeViewId:
+        {
+            var viewString = UM.Controller.activeView + "";
+            return viewString.substr(0, viewString.indexOf("("));
+        }
+
+        onActiveViewIdChanged: updateHasPreviewButton();
+
+        function updateHasPreviewButton()
+        {
+            var actionPanelRect = actionPanelWidget.children[0];
+
+            if(actionPanelRect.outputAvailable)
+            {
+                actionPanelRect.children[0].item.hasPreviewButton = (actionPanelWidget.activeViewId != "SimulationView");
+            }
+        }
+
+        Connections
+        {
+            target: actionPanelWidget.children[0].children[0]
+            onLoaded:
+            {
+                actionPanelWidget.updateHasPreviewButton();
+            }
+        }
+
         Component.onCompleted:
         {
             var actionPanelRect = actionPanelWidget.children[0];
