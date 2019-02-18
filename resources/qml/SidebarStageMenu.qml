@@ -30,10 +30,6 @@ Item
         viewOrientationControls.height = 0
         viewOrientationControls.anchors.margins = 0
 
-        // hide default action panel widget
-        var actionPanelWidget = base.contentItem.children[0].children[3].children[5]
-        actionPanelWidget.visible = false
-
         // adjust message stack position for sidebar
         messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
         messageStack.anchors.horizontalCenter = undefined
