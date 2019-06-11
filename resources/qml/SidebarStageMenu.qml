@@ -19,6 +19,16 @@ Item
 
     Component.onCompleted:
     {
+        var is40 = (CuraSDKVersion == "6.0.0")
+        if(is40)
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
+        }
+        else
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1")
+        }
+
         // top-align toolbar (defined in Cura.qml)
         toolbar.visible = true
         toolbar.anchors.verticalCenter = undefined
@@ -31,7 +41,14 @@ Item
         viewOrientationControls.anchors.margins = 0
 
         // adjust message stack position for sidebar
-        messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
+        if(is40)
+        {
+            messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
+        }
+        else
+        {
+            messageStack = base.contentItem.children[2].children[3].children[7] // declared as property above
+        }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
@@ -47,17 +64,27 @@ Item
 
         // make settingview take up available height
         var printSetupContent = printSetupSelector.contentItem
-        printSetupContent.children[1].visible = false // separator line
-        printSetupContent.children[2].visible = false // recommended/custom button row
+        if(is40)
+        {
+            printSetupContent.children[1].visible = false // separator line
+            printSetupContent.children[2].visible = false // recommended/custom button row
+        }
+        else
+        {
+            printSetupContent.children[2].visible = false // separator line
+            printSetupContent.children[3].visible = false // recommended/custom button row
+        }
 
         printSetupContent.height = undefined
         printSetupContent.anchors.fill = printSetupContent.parent
 
-        printSetupContent.children[0].height = undefined // id: contents
-        printSetupContent.children[0].anchors.fill = printSetupContent
-        printSetupContent.children[0].anchors.bottomMargin = 2 * UM.Theme.getSize("default_lining").height
+        var printSetupChildren = (is40) ? printSetupContent.children[0] : printSetupContent.children[1]
+        printSetupChildren.height = undefined // id: contents
+        printSetupChildren.anchors.fill = printSetupContent
+        printSetupChildren.anchors.bottomMargin = 2 * UM.Theme.getSize("default_lining").height
 
-        var customPrintSetup = printSetupContent.children[0].children[1]
+        var customPrintSetup = printSetupChildren.children[1]
+
         customPrintSetup.padding = UM.Theme.getSize("narrow_margin").width - UM.Theme.getSize("default_lining").width
         customPrintSetup.height = undefined
         customPrintSetup.anchors.fill = customPrintSetup.parent
