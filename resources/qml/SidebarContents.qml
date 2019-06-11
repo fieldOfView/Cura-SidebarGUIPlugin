@@ -37,6 +37,7 @@ Cura.RoundedRectangle
                 visible: printSetupSelector.contentItem.currentModeIndex == Cura.PrintSetupSelectorContents.Mode.Custom
                 anchors
                 {
+                    left: parent.left
                     right: modeToggleSwitch.left
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
@@ -44,6 +45,9 @@ Cura.RoundedRectangle
                 Component.onCompleted:
                 {
                     globalProfileSelector.children[0].visible = false // "Profile:" label
+                    // dropdown
+                    globalProfileSelector.children[1].width = parent.width - modeToggleSwitch.width -
+                        (2 * UM.Theme.getSize("default_margin").width + UM.Theme.getSize("thick_margin").width - 3 * UM.Theme.getSize("default_lining").width)
                 }
             }
 
