@@ -43,7 +43,11 @@ Rectangle
             width: UM.Theme.getSize("layerview_menu_size").width
             source:
             {
-                if(UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null)
+                if(
+                    UM.Controller.activeView != null &&
+                    UM.Controller.activeView.stageMenuComponent != null &&
+                    !UM.Controller.activeView.stageMenuComponent.toString().endsWith("EmptyViewMenuComponent.qml")
+                )
                 {
                     return UM.Controller.activeView.stageMenuComponent;
                 }

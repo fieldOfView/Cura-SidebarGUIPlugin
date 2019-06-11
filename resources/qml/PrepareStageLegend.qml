@@ -38,11 +38,11 @@ Cura.ExpandableComponent
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
         {
-            height = implicitHeight
+            height = implicitHeight;
         }
         onActiveViewChanged:
         {
-            height = undefined
+            height = undefined;
         }
 
         property string activeView:
