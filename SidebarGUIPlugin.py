@@ -20,6 +20,7 @@ class SidebarGUIPlugin(Extension):
         self._prepare_stage_view_id = "SolidView"
 
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+        Application.getInstance().getPreferences().addPreference("sidebargui/expand_extruder_configuration", False)
 
         self._controller = Application.getInstance().getController()
         self._controller.activeStageChanged.connect(self._onStageChanged)

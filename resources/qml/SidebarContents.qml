@@ -99,7 +99,11 @@ Cura.RoundedRectangle
                 height: UM.Theme.getSize("standard_arrow").height
                 color: UM.Theme.getColor("setting_category_text")
 
-                onClicked: extruderConfiguration.visible = !extruderConfiguration.visible
+                onClicked:
+                {
+                    extruderConfiguration.visible = !extruderConfiguration.visible
+                    UM.Preferences.setValue("sidebargui/expand_extruder_configuration", extruderConfiguration.visible)
+                }
                 visible: extruderSelector.visible
             }
         }
@@ -107,7 +111,7 @@ Cura.RoundedRectangle
         Item
         {
             id: extruderConfiguration
-            visible: false
+            visible: UM.Preferences.getValue("sidebargui/expand_extruder_configuration")
             width: parent.width
             height: visible ? childrenRect.height : 0
             children: [ configurationMenu.contentItem ]
