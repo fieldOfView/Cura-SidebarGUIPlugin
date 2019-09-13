@@ -3,12 +3,14 @@
 
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
+from UM.Logger import Logger
 
 from PyQt5.QtCore import QObject
 
 class SidebarGUIProxy(QObject):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
+        Logger.log("d", "SidebarGUI proxy created")
 
     @pyqtSlot("QVariant", result = bool)
     def getExtruderHasQualityForMaterial(self, extruder_stack):

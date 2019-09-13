@@ -26,7 +26,7 @@ def register(app):
 def __matchVersion():
     cura_version = Application.getInstance().getVersion()
     if cura_version == "master":
-        Logger.log("d", "Running Cura from source, ignoring version of the plugin")
+        Logger.log("d", "Running Cura from source; skipping version check")
         return True
     cura_version = Version(cura_version)
     cura_version = Version([cura_version.getMajor(), cura_version.getMinor()])

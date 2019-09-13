@@ -26,7 +26,7 @@ Item
         }
         else
         {
-             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1")
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1 and newer")
         }
 
         // top-align toolbar (defined in Cura.qml)

@@ -5,6 +5,7 @@ import os.path
 from UM.Application import Application
 from UM.Extension import Extension
 from UM.Resources import Resources
+from UM.Logger import Logger
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtQml import qmlRegisterSingletonType
@@ -17,7 +18,7 @@ class SidebarGUIPlugin(Extension):
     def __init__(self):
         super().__init__()
 
-        self._prepare_stage_view_id = "SolidView"
+        self._prepare_stage_view_id = "SolidView" # can be "SolidView" or "XRayView"
 
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
         Application.getInstance().getPreferences().addPreference("sidebargui/expand_extruder_configuration", False)
@@ -29,6 +30,8 @@ class SidebarGUIPlugin(Extension):
         self._proxy = SidebarGUIProxy()
 
     def _onEngineCreated(self):
+        Logger.log("d", "Registering replacement stages")
+
         engine = Application.getInstance()._qml_engine
         qmlRegisterSingletonType(SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy)
 
