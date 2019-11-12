@@ -30,6 +30,7 @@ Cura.RoundedRectangle
         Loader
         {
             width: parent.width
+            height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
             source:
             {
                 var is44 = (CuraSDKVersion >= "7.0.0");

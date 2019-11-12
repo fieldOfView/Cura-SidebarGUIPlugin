@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Item
 {
     width: parent.width
-    height: childrenRect.height + UM.Theme.getSize("default_margin").height
+    height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
 
     Cura.GlobalProfileSelector
     {
