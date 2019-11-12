@@ -29,7 +29,13 @@ Loader
             layerSlider.anchors.top = undefined;
             layerSlider.anchors.bottom = pathSlider.top;
             layerSlider.anchors.bottomMargin = UM.Theme.getSize("default_margin").height;
-            layerSlider.height = UM.Theme.getSize("slider_layerview_size").height - (pathSlider.height + UM.Theme.getSize("default_margin").height);
+            layerSlider.height = Qt.binding(function()
+            {
+                return Math.min(
+                        UM.Theme.getSize("slider_layerview_size").height,
+                        contentItem.height - (stageMenu.item.children[2].height + pathSlider.height + 5 * UM.Theme.getSize("default_margin").height)
+                    );
+            })
         }
     }
 }
