@@ -128,4 +128,10 @@ UM.TabRow
             tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
         }
     }
+
+    //When switching back to the stage, make sure the active extruder is selected
+    Component.onCompleted:
+    {
+        tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
+    }
 }
