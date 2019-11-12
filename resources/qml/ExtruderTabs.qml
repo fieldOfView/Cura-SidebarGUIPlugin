@@ -12,8 +12,24 @@ UM.TabRow
     id: tabBar
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
+    property bool hasMaterials:
+    {
+        if (CuraSDKVersion >= "6.2.0") {
+            return Cura.MachineManager.activeMachine.hasMaterials
+        } else {
+            return Cura.MachineManager.hasMaterials
+        }
+    }
+    property bool hasVariants:
+    {
+        if (CuraSDKVersion >= "6.2.0") {
+            return Cura.MachineManager.activeMachine.hasVariants
+        } else {
+            return Cura.MachineManager.hasVariants
+        }
+    }
 
-    visible: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+    visible: hasMaterials || hasVariants
     width: parent.width
 
     Repeater
@@ -46,7 +62,7 @@ UM.TabRow
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
-                    visible: Cura.MachineManager.hasMaterials
+                    visible: hasMaterials
 
                     anchors
                     {
@@ -63,7 +79,7 @@ UM.TabRow
                 {
                     id: variantLabel
 
-                    visible: Cura.MachineManager.hasVariants
+                    visible: hasVariants
 
                     text: model.variant
                     elide: Text.ElideRight
@@ -83,7 +99,14 @@ UM.TabRow
                 {
                     id: configurationWarning
 
-                    property var extruderStack: Cura.MachineManager.getExtruder(model.index)
+                    property var extruderStack:
+                    {
+                        if (CuraSDKVersion >= "6.2.0") {
+                            return Cura.MachineManager.activeMachine.extruders[model.index];
+                        } else {
+                            return Cura.MachineManager.getExtruder(model.index);
+                        }
+                    }
                     property bool valueWarning: !Cura.SidebarGUIPlugin.getExtruderHasQualityForMaterial(extruderStack)
                     property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
 
