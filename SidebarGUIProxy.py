@@ -1,9 +1,15 @@
-# Copyright (c) 2019 fieldOfView
+# Copyright (c) 2020 fieldOfView
 # The SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application
-from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
+from UM.FlameProfiler import pyqtSlot
+
+try:
+    from cura.Machines.ContainerTree import ContainerTree
+except ImportError:
+    ContainerTree = None
+    pass
 
 from PyQt5.QtCore import QObject
 
@@ -16,29 +22,48 @@ class SidebarGUIProxy(QObject):
     def getExtruderHasQualityForMaterial(self, extruder_stack):
         application = Application.getInstance()
         global_stack = application.getGlobalContainerStack()
-        if not global_stack:
+        if not global_stack or not extruder_stack:
             return False
 
-        if not global_stack.getMetaDataEntry("has_machine_materials"):
+        if not global_stack.getMetaDataEntry("has_materials"):
             return True
 
-        container_registry = application.getContainerRegistry()
-        material_manager = application.getMaterialManager()
+        if not ContainerTree:
+            # Post Cura 4.4; use ContainerTree to find out if there are supported qualities
+            container_tree = ContainerTree.getInstance()
+            machine_node = container_tree.machines[global_stack.definition.getId()]
+            nodes = set()  # type: Set[MaterialNode]
 
-        fallback_material = material_manager.getFallbackMaterialIdByMaterialType(extruder_stack.material.getMetaDataEntry("material"))
+            active_variant_name = extruder_stack.variant.getMetaDataEntry("name")
+            if active_variant_name not in machine_node.variants:
+                Logger.log("w", "Could not find the variant %s", active_variant_name)
+                return True
+            active_variant_node = machine_node.variants[active_variant_name]
+            active_material_node = active_variant_node.materials[extruder_stack.material.getMetaDataEntry("base_file")]
 
-        search_criteria = {
-            "type": "quality",
-            "material": fallback_material
-        }
+            return list(active_material_node.qualities.keys())[0] != "empty_quality"
 
-        if global_stack.getMetaDataEntry("has_machine_quality"):
-            search_criteria["definition"] = global_stack.definition.id
         else:
-            search_criteria["definition"] = "fdmprinter"
-        if global_stack.getMetaDataEntry("has_variants"):
-            search_criteria["variant"] = extruder_stack.variant.name
+            # Pre Cura 4.4; use MaterialManager et al to find out if there are supported qualities
+            search_criteria = {
+                "type": "quality",
+            }
 
-        containers_metadata = container_registry.findInstanceContainersMetadata(**search_criteria)
+            if global_stack.getMetaDataEntry("has_machine_quality"):
+                search_criteria["definition"] = global_stack.getMetaDataEntry("quality_definition", global_stack.definition.id)
+            else:
+                return True
 
-        return containers_metadata != []
+            container_registry = application.getContainerRegistry()
+            if(hasattr(application, "getMaterialManager")):
+                material_manager = application.getMaterialManager()
+
+                fallback_material = material_manager.getFallbackMaterialIdByMaterialType(extruder_stack.material.getMetaDataEntry("material"))
+                search_criteria["material"] = fallback_material
+
+            if global_stack.getMetaDataEntry("has_variants"):
+                search_criteria["variant"] = extruder_stack.variant.name
+
+            containers_metadata = container_registry.findInstanceContainersMetadata(**search_criteria)
+
+            return containers_metadata != []
