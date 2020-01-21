@@ -9,10 +9,28 @@ import Cura 1.1 as Cura
 
 Rectangle
 {
+    id: viewOptionsPanel
+
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
+
+    property string projectionType: UM.Preferences.getValue("general/camera_perspective_mode")
+
+    Connections
+    {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            if (preference !== "general/camera_perspective_mode")
+            {
+                return
+            }
+            projectionType = UM.Preferences.getValue("general/camera_perspective_mode")
+        }
+    }
+
 
     Column
     {
@@ -31,9 +49,68 @@ Rectangle
         // hidden items
         visible: false
 
-        Cura.ViewOrientationControls {
+        Row
+        {
             id: viewPanelOrientationControls
-            anchors.horizontalCenter: parent.horizontalCenter
+
+            spacing: UM.Theme.getSize("narrow_margin").width
+
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width - 2 * UM.Theme.getSize("default_lining").width
+
+            Cura.ViewOrientationControls {}
+
+            UM.SimpleButton
+            {
+                id: projectionToggle
+                iconSource:
+                {
+                    if(viewOptionsPanel.projectionType == "orthographic")
+                    {
+                        return "../icons/view_perspective.svg"
+                    }
+                    else
+                    {
+                        return "../icons/view_orthographic.svg"
+                    }
+                }
+                onClicked:
+                {
+                    if(viewOptionsPanel.projectionType == "orthographic")
+                    {
+                        UM.Preferences.setValue("general/camera_perspective_mode", "perspective")
+                    }
+                    else
+                    {
+                        UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
+                    }
+                }
+
+                width: UM.Theme.getSize("small_button").width
+                height: UM.Theme.getSize("small_button").height
+                hoverColor: UM.Theme.getColor("small_button_text_hover")
+                color: UM.Theme.getColor("small_button_text")
+                iconMargin: UM.Theme.getSize("thick_lining").width
+
+                UM.TooltipArea
+                {
+                    anchors.fill: parent
+                    text:
+                    {
+                        if(viewOptionsPanel.projectionType == "orthographic")
+                        {
+                            return catalog.i18nc("@info:tooltip", "Perspective View")
+                        }
+                        else
+                        {
+                            return catalog.i18nc("@info:tooltip", "Orthographic View")
+                        }
+                    }
+
+                    acceptedButtons: Qt.NoButton
+                }
+            }
+
         }
 
         Loader
