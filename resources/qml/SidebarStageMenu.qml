@@ -20,13 +20,18 @@ Item
     Component.onCompleted:
     {
         var is40 = (CuraSDKVersion == "6.0.0")
+        var isLE44 = (CuraSDKVersion <= "7.0.0") && UM.Application.version != "master"
         if(is40)
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
         }
+        else if(isLE44)
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1 - 4.4")
+        }
         else
         {
-             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1 and newer")
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.5 and newer")
         }
 
         // top-align toolbar (defined in Cura.qml)
@@ -45,9 +50,13 @@ Item
         {
             messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
         }
-        else
+        else if(isLE44)
         {
             messageStack = base.contentItem.children[2].children[3].children[7] // declared as property above
+        }
+        else
+        {
+            messageStack = base.contentItem.children[2].children[3].children[8] // declared as property above
         }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
