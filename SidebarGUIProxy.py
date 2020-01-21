@@ -9,7 +9,6 @@ try:
     from cura.Machines.ContainerTree import ContainerTree
 except ImportError:
     ContainerTree = None
-    pass
 
 from PyQt5.QtCore import QObject
 
@@ -28,7 +27,7 @@ class SidebarGUIProxy(QObject):
         if not global_stack.getMetaDataEntry("has_materials"):
             return True
 
-        if not ContainerTree:
+        if ContainerTree is not None:
             # Post Cura 4.4; use ContainerTree to find out if there are supported qualities
             container_tree = ContainerTree.getInstance()
             machine_node = container_tree.machines[global_stack.definition.getId()]
