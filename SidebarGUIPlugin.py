@@ -20,7 +20,7 @@ class SidebarGUIPlugin(Extension):
 
         self._prepare_stage_view_id = "SolidView" # can be "SolidView" or "XRayView"
 
-        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+        Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
         Application.getInstance().getPreferences().addPreference("sidebargui/expand_extruder_configuration", False)
 
         self._controller = Application.getInstance().getController()
@@ -28,6 +28,11 @@ class SidebarGUIPlugin(Extension):
         self._controller.activeViewChanged.connect(self._onViewChanged)
 
         self._proxy = SidebarGUIProxy()
+
+    def _onPluginsLoaded(self):
+        # delayed connection to engineCreatedSignal to force this plugin to receive that signal
+        # AFTER the original stages are created
+        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onEngineCreated(self):
         Logger.log("d", "Registering replacement stages")
