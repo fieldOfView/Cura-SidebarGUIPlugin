@@ -114,6 +114,42 @@ Cura.ExpandableComponent
 
         Label
         {
+            text: catalog.i18nc("@label", "Outside buildvolume")
+            visible: parent.activeView == "SolidView"
+
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                width: UM.Theme.getSize("layerview_legend_size").width
+                height: UM.Theme.getSize("layerview_legend_size").height
+
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("lining")
+
+                LinearGradient
+                {
+                    anchors.fill: parent
+                    anchors.margins: UM.Theme.getSize("default_lining").width
+                    start: Qt.point(0, 0)
+                    end: Qt.point(width, height)
+                    gradient: Gradient
+                    {
+                        GradientStop { position: 0.5; color: UM.Theme.getColor("model_unslicable") }
+                        GradientStop { position: 0.5001; color: UM.Theme.getColor("model_unslicable_alt") }
+                    }
+                }
+            }
+        }
+
+        Label
+        {
             text: catalog.i18nc("@label", "Normal geometry")
             visible: parent.activeView == "XRayView"
 
