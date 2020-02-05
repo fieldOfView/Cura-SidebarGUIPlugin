@@ -156,5 +156,11 @@ Cura.RoundedRectangle
             bottom: parent.bottom
         }
         width: parent.width
+
+        Component.onDestruction:
+        {
+            //  HACK: This is to ensure that the parent never gets set to null, as this wreaks havoc on the focus.
+            printSetupSelector.contentItem.parent = printSetupSelector;
+        }
     }
 }
