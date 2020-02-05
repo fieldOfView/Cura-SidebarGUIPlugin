@@ -8,7 +8,7 @@ from UM.FlameProfiler import pyqtSlot
 try:
     from cura.Machines.ContainerTree import ContainerTree
 except ImportError:
-    ContainerTree = None
+    ContainerTree = None  # type: ignore
 
 from PyQt5.QtCore import QObject
 
