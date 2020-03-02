@@ -51,25 +51,6 @@ Cura.ExpandableComponent
             return viewString.substr(0, viewString.indexOf("("));
         }
 
-        ExclusiveGroup { id: viewGroup }
-
-        CheckBox
-        {
-            id: solidViewCheckBox
-            checked: parent.activeView == "SolidView"
-            onClicked:
-            {
-                if(checked && parent.activeView != "SolidView")
-                {
-                    UM.Controller.setActiveView("SolidView")
-                }
-            }
-            text: catalog.i18nc("@label", "Normal view")
-            style: UM.Theme.styles.checkbox
-            width: parent.width
-            exclusiveGroup: viewGroup
-        }
-
         CheckBox
         {
             id: xrayViewCheckBox
@@ -80,11 +61,14 @@ Cura.ExpandableComponent
                 {
                     UM.Controller.setActiveView("XRayView")
                 }
+                else if(! checked && parent.activeView != "SolidView")
+                {
+                    UM.Controller.setActiveView("SolidView")
+                }
             }
             text: catalog.i18nc("@label", "X-Ray view")
             style: UM.Theme.styles.checkbox
             width: parent.width
-            exclusiveGroup: viewGroup
         }
 
         Label
