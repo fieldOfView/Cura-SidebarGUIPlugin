@@ -22,6 +22,7 @@ class SidebarGUIPlugin(Extension):
 
         Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
         Application.getInstance().getPreferences().addPreference("sidebargui/expand_extruder_configuration", False)
+        Application.getInstance().getPreferences().addPreference("sidebargui/expand_legend", True)
 
         self._controller = Application.getInstance().getController()
         self._controller.activeStageChanged.connect(self._onStageChanged)

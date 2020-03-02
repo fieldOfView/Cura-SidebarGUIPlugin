@@ -15,6 +15,9 @@ Rectangle
     border.color: UM.Theme.getColor("lining")
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
+    clip: true
+
+    Behavior on height { NumberAnimation { duration: 100 } }
 
     property string projectionType: UM.Preferences.getValue("general/camera_perspective_mode")
 
@@ -39,7 +42,8 @@ Rectangle
         children:
         [
             viewPanelOrientationControls,
-            viewMenuComponent.item.contentItem
+            legendHeader,
+            legendItems
         ]
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -130,6 +134,57 @@ Rectangle
                 }
                 return "PrepareStageLegend.qml";
             }
+        }
+
+        Item
+        {
+            id: legendHeader
+            width: parent.width
+            height: childrenRect.height
+
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+            Item {
+                id: legendHeaderItem
+                anchors
+                {
+                    left: parent.left
+                    right: legendCollapseButton.left
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                }
+                children: [viewMenuComponent.item.contentItem.children[0]]
+                height: childrenRect.height
+            }
+
+            UM.SimpleButton
+            {
+                id: legendCollapseButton
+                anchors
+                {
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("narrow_margin").width
+                    verticalCenter: legendHeaderItem.verticalCenter
+                }
+                iconSource: legendItems.visible ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                color: UM.Theme.getColor("setting_category_text")
+
+                onClicked:
+                {
+                    legendItems.visible = !legendItems.visible;
+                    UM.Preferences.setValue("sidebargui/expand_legend", legendItems.visible);
+                }
+            }
+        }
+
+        Column
+        {
+            id: legendItems
+            visible: UM.Preferences.getValue("sidebargui/expand_legend")
+
+            children: [viewMenuComponent.item.contentItem]
         }
     }
 
