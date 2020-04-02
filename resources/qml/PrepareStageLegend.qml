@@ -33,16 +33,12 @@ Cura.ExpandableComponent
     {
         id: viewSettings
         width: UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
+        height: implicitHeight
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
-        // For some reason the height/width of the column gets set to 0 if this is not set...
-        Component.onCompleted:
-        {
-            height = implicitHeight;
-        }
         onActiveViewChanged:
         {
-            height = undefined;
+            xrayViewCheckBox.checked = (activeView == "XRayView")
         }
 
         property string activeView:
