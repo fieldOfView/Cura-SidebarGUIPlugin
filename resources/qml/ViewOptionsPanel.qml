@@ -153,7 +153,10 @@ Rectangle
                     right: legendCollapseButton.left
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
-                children: [viewMenuComponent.item.contentItem.children[0]]
+                children: [
+                    viewMenuComponent.item.contentItem.children[0],
+                    viewMenuComponent.item.contentItem.children[1]
+                ]
                 height: childrenRect.height
             }
 

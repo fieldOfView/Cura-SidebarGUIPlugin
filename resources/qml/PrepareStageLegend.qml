@@ -67,6 +67,12 @@ Cura.ExpandableComponent
             width: parent.width
         }
 
+        Item
+        {
+            // mock item to compensate for compatibility mode label in simulation view
+            visible: false
+        }
+
         Label
         {
             text: catalog.i18nc("@label", "Overhang")
