@@ -17,10 +17,15 @@ Item
     property var messageStack
     property var stagesListContainer
 
+    property bool is40
+    property bool isLE44
+    property bool isLE46
+
     Component.onCompleted:
     {
-        var is40 = (CuraSDKVersion == "6.0.0")
-        var isLE44 = (CuraSDKVersion <= "7.0.0") && UM.Application.version != "master"
+        is40 = (CuraSDKVersion == "6.0.0")
+        isLE44 = (CuraSDKVersion <= "7.0.0")
+        isLE46 = (CuraSDKVersion <= "7.2.0") && UM.Application.version != "master"
         if(is40)
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
@@ -29,9 +34,13 @@ Item
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.1 - 4.4")
         }
+        else if(isLE46)
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.5 - 4.6")
+        }
         else
         {
-             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.5 and newer")
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.7 and newer")
         }
 
         // top-align toolbar (defined in Cura.qml)
@@ -141,7 +150,11 @@ Item
 
         Component.onCompleted: {
             machineSelection.children[1].visible = false // remove shadow
-            var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
+            if(isLE46) {
+                var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
+            } else {
+                var machineSelectionHeader = machineSelection.children[0].children[3].children[1]
+            }
             // adjust header margins, because the height is smaller than designed
             machineSelectionHeader.anchors.topMargin = 0
             machineSelectionHeader.anchors.bottomMargin = 0
