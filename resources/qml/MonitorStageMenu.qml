@@ -17,8 +17,16 @@ Item
     property var messageStack
     property var stagesListContainer
 
+    property bool is40
+    property bool isLE44
+    property bool isLE46
+
     Component.onCompleted:
     {
+        is40 = (CuraSDKVersion == "6.0.0")
+        isLE44 = (CuraSDKVersion <= "7.0.0")
+        isLE46 = (CuraSDKVersion <= "7.2.0") && UM.Application.version != "master"
+
         // adjust message stack position for sidebar
         messageStack = base.contentItem.children[0].children[3].children[8]
         messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
@@ -53,7 +61,11 @@ Item
 
         Component.onCompleted: {
             machineSelection.children[1].visible = false // remove shadow
-            var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
+            if(isLE46) {
+                var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
+            } else {
+                var machineSelectionHeader = machineSelection.children[0].children[3].children[1]
+            }
             // adjust header margins, because the height is smaller than designed
             machineSelectionHeader.anchors.topMargin = 0
             machineSelectionHeader.anchors.bottomMargin = 0
