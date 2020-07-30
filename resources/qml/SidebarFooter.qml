@@ -52,6 +52,17 @@ Cura.RoundedRectangle
             onLoaded:
             {
                 actionPanelWidget.updateHasPreviewButton();
+
+                // change left anchor of the time and cost information panel
+                var actionPanelRect = actionPanelWidget.children[0];
+                if(actionPanelRect.children[0].item != null && actionPanelRect.children[0].item.children[0] != null)
+                {
+                    var timeAndCostsInformation = actionPanelRect.children[0].item.children[0].children[1];
+                    if (timeAndCostsInformation != undefined)
+                    {
+                        timeAndCostsInformation.anchors.leftMargin = Qt.binding(function() { return -actionPanelWidget.children[1].width - UM.Theme.getSize("thin_margin").width });
+                    }
+                }
             }
         }
 
