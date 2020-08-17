@@ -3,9 +3,9 @@
     "author": "fieldOfView",
     "version": "4.0.9-DEV",
     "minimum_cura_version": "4.0",
-    "maximum_cura_version": "4.6",
+    "maximum_cura_version": "4.7",
     "description": "Provides an alternative interface which restores the sidebar",
     "api": "6.0.0",
-    "supported_sdk_versions": ["6.0.0", "6.1.0", "6.2.0", "6.3.0", "7.0.0", "7.1.0", "7.2.0"],
+    "supported_sdk_versions": ["6.0.0", "6.1.0", "6.2.0", "6.3.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0"],
     "i18n-catalog": "cura"
 }
