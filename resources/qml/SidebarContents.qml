@@ -19,6 +19,8 @@ Cura.RoundedRectangle
 
     width: UM.Theme.getSize("print_setup_widget").width
 
+    property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
+
     Column
     {
         id: settingsHeader
@@ -26,6 +28,8 @@ Cura.RoundedRectangle
 
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+        visible: !preSlicedData
 
         Loader
         {
@@ -148,6 +152,7 @@ Cura.RoundedRectangle
     Item
     {
         id: settingsViewContainer
+        visible: !preSlicedData
         children: [ printSetupSelector.contentItem ]
         anchors
         {
@@ -162,5 +167,20 @@ Cura.RoundedRectangle
             //  HACK: This is to ensure that the parent never gets set to null, as this wreaks havoc on the focus.
             printSetupSelector.contentItem.parent = printSetupSelector;
         }
+    }
+
+    Label
+    {
+        visible: preSlicedData
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("thick_margin").height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").height
+        width: parent.width
+        font: UM.Theme.getFont("medium_bold")
+        color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
+
+        text: catalog.i18nc("@label shown when we load a Gcode file", "Print setup disabled. G-code file can not be modified.")
     }
 }
