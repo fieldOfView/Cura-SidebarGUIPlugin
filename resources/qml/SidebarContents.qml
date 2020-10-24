@@ -57,11 +57,22 @@ Cura.RoundedRectangle
                 anchors.bottom: extruderSelector.bottom
                 height: UM.Theme.getSize("default_lining").height
                 color: UM.Theme.getColor("lining")
-                visible: extruderSelector.visible
+                visible: extruderSelector.visible && extruderSelector.enabled
             }
             ExtruderTabs
             {
                 id: extruderSelector
+                enabled:
+                {
+                    if (printSetupSelector.contentItem.currentModeIndex == Cura.PrintSetupSelectorContents.Mode.Custom)
+                    {
+                        return true
+                    }
+                    else
+                    {
+                        return extruderConfiguration.visible
+                    }
+                }
 
                 anchors
                 {
