@@ -21,6 +21,9 @@ Item
     property bool isLE44
     property bool isLE46
 
+    property bool sidebarVisible: UM.Preferences.getValue("view/settings_visible")
+    property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
+
     Component.onCompleted:
     {
         is40 = (CuraSDKVersion == "6.0.0")
@@ -69,16 +72,16 @@ Item
         }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
-        messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+        messageStack.anchors.leftMargin = Math.floor((base.width - sidebarWidth) / 2)
 
         // adjust stages menu position for sidebar
         stagesListContainer = mainWindowHeader.children[1] // declared as property above
         stagesListContainer.anchors.horizontalCenter = undefined
         stagesListContainer.anchors.left = stagesListContainer.parent.left
-        stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+        stagesListContainer.anchors.leftMargin = Math.floor((base.width - sidebarWidth - stagesListContainer.width) / 2)
 
         // compensate viewport for full-height sidebar
-        base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
+        base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
 
         // make settingview take up available height
         var printSetupContent = printSetupSelector.contentItem
@@ -127,13 +130,26 @@ Item
         onWidthChanged:
         {
             // compensate viewport for full-height sidebar
-            base.viewportRect = Qt.rect(0, 0, (base.width - printSetupSelector.width) / base.width, 1.0)
+            base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
 
             // adjust message stack position for sidebar
-            messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+            messageStack.anchors.leftMargin = Math.floor((base.width - sidebarWidth) / 2)
 
             // adjust stages menu position for sidebar
-            stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+            stagesListContainer.anchors.leftMargin = Math.floor((base.width - sidebarWidth - stagesListContainer.width) / 2)
+        }
+    }
+
+    Connections
+    {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            if (preference == "view/settings_visible")
+            {
+                sidebarVisible = UM.Preferences.getValue("view/settings_visible")
+                base.onWidthChanged(base.width)
+            }
         }
     }
 
@@ -171,15 +187,30 @@ Item
         y: Math.floor(UM.Theme.getSize("stage_menu").height / 2)
     }
 
+    PrintSetupSummary
+    {
+        id: printSetupSummary
+        visible: !sidebarVisible
+
+        width: printSetupSelector.width
+
+        anchors
+        {
+            top: parent.top
+            right: bottomRight.right
+        }
+    }
+
     SidebarContents
     {
         id: printSetupSidebar
+        visible: sidebarVisible
 
         anchors
         {
             top: parent.top
             bottom: actionRow.top
-            bottomMargin: UM.Theme.getSize("thin_margin").height
+            bottomMargin: actionRow.height == 0 ? 0 : UM.Theme.getSize("thin_margin").height
             right: bottomRight.right
         }
     }

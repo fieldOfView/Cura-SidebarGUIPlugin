@@ -7,7 +7,7 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-UM.TabRow
+TabRow
 {
     id: tabBar
 
@@ -36,7 +36,7 @@ UM.TabRow
     {
         id: repeater
         model: extrudersModel
-        delegate: UM.TabRowButton
+        delegate: TabRowButton
         {
             contentItem: Item
             {

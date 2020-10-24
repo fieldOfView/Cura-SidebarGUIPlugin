@@ -179,7 +179,29 @@ Item
     ModeToggleSwitch
     {
         id: modeToggleSwitch
-        anchors.right: parent.right
+        anchors.right: collapseButton.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
+    }
+
+    UM.SimpleButton
+    {
+        id: collapseButton
+        anchors
+        {
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").width
+
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+        iconSource: UM.Theme.getIcon("cross1")
+        width: UM.Theme.getSize("default_arrow").width
+        height: UM.Theme.getSize("default_arrow").height
+        color: UM.Theme.getColor("small_button_text")
+
+        onClicked:
+        {
+            UM.Preferences.setValue("view/settings_visible", false)
+        }
     }
 }

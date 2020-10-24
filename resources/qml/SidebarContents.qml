@@ -142,6 +142,10 @@ Cura.RoundedRectangle
                     {
                         extruderConfiguration.visible = false
                     }
+                    else
+                    {
+                        extruderConfiguration.visible = UM.Preferences.getValue("sidebargui/expand_extruder_configuration")
+                    }
                 }
             }
         }
