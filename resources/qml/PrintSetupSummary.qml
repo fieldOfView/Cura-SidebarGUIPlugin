@@ -9,9 +9,11 @@ import Cura 1.1 as Cura
 
 Cura.RoundedRectangle
 {
+    property bool summaryEnabled: (prepareStageActive || !preSlicedData)
+
     color:
     {
-        if (preSlicedData)
+        if (!summaryEnabled)
         {
             return UM.Theme.getColor("action_button_disabled")
         }
@@ -31,7 +33,7 @@ Cura.RoundedRectangle
     Cura.PrintSetupSelectorHeader
     {
         id: printSetupSummary
-        visible: !preSlicedData
+        visible: summaryEnabled
 
         anchors
         {
@@ -55,7 +57,7 @@ Cura.RoundedRectangle
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         source: UM.Theme.getIcon("pencil")
-        visible: !preSlicedData
+        visible: summaryEnabled
         width: UM.Theme.getSize("action_button_icon").width
         height: UM.Theme.getSize("action_button_icon").height
         color: UM.Theme.getColor("small_button_text")
@@ -65,7 +67,7 @@ Cura.RoundedRectangle
     {
         id: extruderSummary
         enabled: false
-        visible: !preSlicedData
+        visible: summaryEnabled
 
         anchors
         {
@@ -81,7 +83,7 @@ Cura.RoundedRectangle
 
     Label
     {
-        visible: preSlicedData
+        visible: !summaryEnabled
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("thick_margin").height
         anchors.left: parent.left
@@ -98,7 +100,7 @@ Cura.RoundedRectangle
     {
         id: mouseArea
         hoverEnabled: true
-        enabled: !preSlicedData
+        enabled: summaryEnabled
         anchors.fill: parent
 
         onClicked:

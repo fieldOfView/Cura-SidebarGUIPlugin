@@ -21,9 +21,10 @@ Item
     property bool isLE44
     property bool isLE46
 
+    property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") > 0
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
     property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
-    property bool sidebarVisible: settingsVisible && !preSlicedData
+    property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData)
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
 
     Component.onCompleted:
@@ -152,6 +153,15 @@ Item
                 settingsVisible = UM.Preferences.getValue("view/settings_visible")
                 base.onWidthChanged(base.width)
             }
+        }
+    }
+
+    Connections
+    {
+        target: UM.Controller
+        onActiveStageChanged:
+        {
+            prepareStageActive = (UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0)
         }
     }
 
