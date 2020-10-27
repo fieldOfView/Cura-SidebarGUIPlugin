@@ -21,7 +21,8 @@ Item
     property bool isLE44
     property bool isLE46
 
-    property bool sidebarVisible: UM.Preferences.getValue("view/settings_visible")
+    property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
+    property bool sidebarVisible: UM.Preferences.getValue("view/settings_visible") && !preSlicedData
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
 
     Component.onCompleted:
@@ -147,10 +148,16 @@ Item
         {
             if (preference == "view/settings_visible")
             {
-                sidebarVisible = UM.Preferences.getValue("view/settings_visible")
+                sidebarVisible = UM.Preferences.getValue("view/settings_visible") && !preSlicedData
                 base.onWidthChanged(base.width)
             }
         }
+    }
+
+    onPreSlicedDataChanged:
+    {
+        sidebarVisible = UM.Preferences.getValue("view/settings_visible") && !preSlicedData
+        base.onWidthChanged(base.width)
     }
 
     OpenFileButton {}

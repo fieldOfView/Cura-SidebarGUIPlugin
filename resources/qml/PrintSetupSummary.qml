@@ -9,7 +9,18 @@ import Cura 1.1 as Cura
 
 Cura.RoundedRectangle
 {
-    color: mouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+    color:
+    {
+        if (preSlicedData)
+        {
+            return UM.Theme.getColor("action_button_disabled")
+        }
+        else if (mouseArea.containsMouse)
+        {
+            return UM.Theme.getColor("action_button_hovered")
+        }
+        return UM.Theme.getColor("action_button")
+    }
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
@@ -20,6 +31,7 @@ Cura.RoundedRectangle
     Cura.PrintSetupSelectorHeader
     {
         id: printSetupSummary
+        visible: !preSlicedData
 
         anchors
         {
@@ -43,7 +55,7 @@ Cura.RoundedRectangle
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         source: UM.Theme.getIcon("pencil")
-        visible: source != ""
+        visible: !preSlicedData
         width: UM.Theme.getSize("action_button_icon").width
         height: UM.Theme.getSize("action_button_icon").height
         color: UM.Theme.getColor("small_button_text")
@@ -53,6 +65,7 @@ Cura.RoundedRectangle
     {
         id: extruderSummary
         enabled: false
+        visible: !preSlicedData
 
         anchors
         {
@@ -66,10 +79,26 @@ Cura.RoundedRectangle
         }
     }
 
+    Label
+    {
+        visible: preSlicedData
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("thick_margin").height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").height
+        width: parent.width
+        font: UM.Theme.getFont("medium_bold")
+        color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
+
+        text: catalog.i18nc("@label shown when we load a Gcode file", "Print setup disabled. G-code file can not be modified.")
+    }
+
     MouseArea
     {
         id: mouseArea
         hoverEnabled: true
+        enabled: !preSlicedData
         anchors.fill: parent
 
         onClicked:
