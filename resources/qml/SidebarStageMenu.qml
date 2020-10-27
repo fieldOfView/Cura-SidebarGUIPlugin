@@ -74,13 +74,13 @@ Item
         }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
-        messageStack.anchors.leftMargin = Math.floor((base.width - sidebarWidth) / 2)
+        messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
 
         // adjust stages menu position for sidebar
         stagesListContainer = mainWindowHeader.children[1] // declared as property above
         stagesListContainer.anchors.horizontalCenter = undefined
         stagesListContainer.anchors.left = stagesListContainer.parent.left
-        stagesListContainer.anchors.leftMargin = Math.floor((base.width - sidebarWidth - stagesListContainer.width) / 2)
+        stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
 
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
@@ -135,10 +135,10 @@ Item
             base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
 
             // adjust message stack position for sidebar
-            messageStack.anchors.leftMargin = Math.floor((base.width - sidebarWidth) / 2)
+            messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
 
             // adjust stages menu position for sidebar
-            stagesListContainer.anchors.leftMargin = Math.floor((base.width - sidebarWidth - stagesListContainer.width) / 2)
+            stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
         }
     }
 
