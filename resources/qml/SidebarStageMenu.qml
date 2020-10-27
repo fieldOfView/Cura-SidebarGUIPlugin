@@ -22,7 +22,8 @@ Item
     property bool isLE46
 
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
-    property bool sidebarVisible: UM.Preferences.getValue("view/settings_visible") && !preSlicedData
+    property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
+    property bool sidebarVisible: settingsVisible && !preSlicedData
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
 
     Component.onCompleted:
@@ -148,7 +149,7 @@ Item
         {
             if (preference == "view/settings_visible")
             {
-                sidebarVisible = UM.Preferences.getValue("view/settings_visible") && !preSlicedData
+                settingsVisible = UM.Preferences.getValue("view/settings_visible")
                 base.onWidthChanged(base.width)
             }
         }
@@ -156,7 +157,7 @@ Item
 
     onPreSlicedDataChanged:
     {
-        sidebarVisible = UM.Preferences.getValue("view/settings_visible") && !preSlicedData
+        settingsVisible = UM.Preferences.getValue("view/settings_visible")
         base.onWidthChanged(base.width)
     }
 
