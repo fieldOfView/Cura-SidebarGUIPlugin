@@ -201,8 +201,6 @@ Item
 
         anchors.right: printSetupSidebar.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-        y: Math.floor(UM.Theme.getSize("stage_menu").height / 2)
     }
 
     PrintSetupSummary
