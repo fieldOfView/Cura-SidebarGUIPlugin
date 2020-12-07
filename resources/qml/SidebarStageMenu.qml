@@ -16,6 +16,7 @@ Item
 
     property var messageStack
     property var stagesListContainer
+    property var applicationLogo
 
     property bool is40
     property bool isLE44
@@ -83,6 +84,10 @@ Item
         stagesListContainer.anchors.left = stagesListContainer.parent.left
         stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
 
+        // hide application logo if there is no room for it
+        applicationLogo = mainWindowHeader.children[0] // declared as property above
+        applicationLogo.visible = stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
+
         // compensate viewport for full-height sidebar
         base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
 
@@ -140,6 +145,9 @@ Item
 
             // adjust stages menu position for sidebar
             stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+
+            // hide application logo if there is no room for it
+            applicationLogo.visible = stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
         }
     }
 
