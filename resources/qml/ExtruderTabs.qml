@@ -110,7 +110,7 @@ TabRow
                     property bool valueWarning: !Cura.SidebarGUIPlugin.getExtruderHasQualityForMaterial(extruderStack)
                     property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
 
-                    visible: valueWarning || valueError
+                    visible: (tabBar.hasMaterials || tabBar.hasVariants) && (valueWarning || valueError)
 
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter

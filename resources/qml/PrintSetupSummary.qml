@@ -23,12 +23,21 @@ Cura.RoundedRectangle
         }
         return UM.Theme.getColor("action_button")
     }
+
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
     cornerSide: Cura.RoundedRectangle.Direction.Left
 
-    height: printSetupSummary.height + extruderSummary.height + 3 * UM.Theme.getSize("default_margin").height
+    height:
+    {
+        var result = printSetupSummary.height + 2 * UM.Theme.getSize("default_margin").height
+        if (extruderSummary.visible)
+        {
+            result += extruderSummary.height + UM.Theme.getSize("default_margin").height
+        }
+        return result
+    }
 
     Cura.PrintSetupSelectorHeader
     {
@@ -63,11 +72,28 @@ Cura.RoundedRectangle
         color: UM.Theme.getColor("small_button_text")
     }
 
+    property bool hasMaterials:
+    {
+        if (CuraSDKVersion >= "6.2.0") {
+            return Cura.MachineManager.activeMachine.hasMaterials
+        } else {
+            return Cura.MachineManager.hasMaterials
+        }
+    }
+    property bool hasVariants:
+    {
+        if (CuraSDKVersion >= "6.2.0") {
+            return Cura.MachineManager.activeMachine.hasVariants
+        } else {
+            return Cura.MachineManager.hasVariants
+        }
+    }
+
     ExtruderTabs
     {
         id: extruderSummary
         enabled: false
-        visible: summaryEnabled
+        visible: summaryEnabled && (hasMaterials || hasVariants)
 
         anchors
         {
