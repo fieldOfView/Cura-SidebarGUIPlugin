@@ -13,7 +13,8 @@ Loader
 
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
     property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
-    property bool sidebarVisible: settingsVisible && !preSlicedData
+    property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
+    property bool sidebarVisible: settingsVisible && !preSlicedData && settingsDocked
 
     onLoaded:
     {
@@ -67,9 +68,15 @@ Loader
         target: UM.Preferences
         onPreferenceChanged:
         {
-            if (preference == "view/settings_visible")
+            switch (preference)
             {
-                settingsVisible = UM.Preferences.getValue("view/settings_visible")
+                case "view/settings_visible":
+                    settingsVisible = UM.Preferences.getValue("view/settings_visible")
+                    base.onWidthChanged(base.width)
+                    break
+                case "sidebargui/docked_sidebar":
+                    settingsDocked = UM.Preferences.getValue("sidebargui/docked_sidebar")
+                    break
             }
         }
     }

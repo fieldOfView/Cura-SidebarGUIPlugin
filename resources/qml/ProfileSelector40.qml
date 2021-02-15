@@ -35,8 +35,30 @@ Item
     ModeToggleSwitch
     {
         id: modeToggleSwitch
-        anchors.right: collapseButton.left
+        anchors.right: dockButton.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
+    }
+
+    UM.SimpleButton
+    {
+        id: dockButton
+        anchors
+        {
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").width
+
+            right: collapseButton.left
+            rightMargin: UM.Theme.getSize("thin_margin").width
+        }
+        iconSource: UM.Theme.getIcon("cross2")
+        width: UM.Theme.getSize("default_arrow").width
+        height: UM.Theme.getSize("default_arrow").height
+        color: UM.Theme.getColor("small_button_text")
+
+        onClicked:
+        {
+            UM.Preferences.setValue("sidebargui/docked_sidebar", !UM.Preferences.getValue("sidebargui/docked_sidebar"))
+        }
     }
 
     UM.SimpleButton

@@ -3,6 +3,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
+import QtQuick.Window 2.2
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -25,7 +26,8 @@ Item
     property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") > 0
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
     property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
-    property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData)
+    property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
+    property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData) && settingsDocked
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
 
     Component.onCompleted:
@@ -156,10 +158,16 @@ Item
         target: UM.Preferences
         onPreferenceChanged:
         {
-            if (preference == "view/settings_visible")
+            switch (preference)
             {
-                settingsVisible = UM.Preferences.getValue("view/settings_visible")
-                base.onWidthChanged(base.width)
+                case "view/settings_visible":
+                    settingsVisible = UM.Preferences.getValue("view/settings_visible")
+                    base.onWidthChanged(base.width)
+                    break
+                case "sidebargui/docked_sidebar":
+                    settingsDocked = UM.Preferences.getValue("sidebargui/docked_sidebar")
+                    base.onWidthChanged(base.width)
+                    break
             }
         }
     }
@@ -225,11 +233,12 @@ Item
         }
     }
 
-    SidebarContents
+    Item
     {
         id: printSetupSidebar
         visible: sidebarVisible
 
+        width: UM.Theme.getSize("print_setup_widget").width
         anchors
         {
             top: parent.top
@@ -237,6 +246,14 @@ Item
             bottomMargin: actionRow.height == 0 ? 0 : UM.Theme.getSize("thin_margin").height
             right: bottomRight.right
         }
+
+        children:[sidebarContents]
+    }
+
+    SidebarContents
+    {
+        id: sidebarContents
+        anchors.fill: parent
     }
 
     SidebarFooter
@@ -252,5 +269,39 @@ Item
         id: bottomRight
         anchors.right: parent.right
         y: base.height - stageMenu.mapToItem(base.contentItem, 0, 0).y - height
+    }
+
+    Window
+    {
+        id: sidebarToolWindow
+        title: catalog.i18nc("@title:window", "Print Settings")
+
+        flags: Qt.Tool | Qt.WindowTitleHint;
+
+        minimumWidth: UM.Theme.getSize("print_setup_widget").width
+        maximumWidth: minimumWidth
+        width: minimumWidth
+        minimumHeight: Math.floor(1.5 * minimumWidth)
+        height: minimumHeight
+
+        visible: !settingsDocked && settingsVisible
+        onVisibleChanged:
+        {
+            if (visible)
+            {
+                printSetupWindow.children = [sidebarContents]
+            }
+            else
+            {
+                printSetupSidebar.children = [sidebarContents]
+            }
+        }
+
+        Item
+        {
+            id: printSetupWindow
+
+            anchors.fill: parent
+        }
     }
 }
