@@ -194,7 +194,7 @@ Item
             right: collapseButton.left
             rightMargin: UM.Theme.getSize("thin_margin").width
         }
-        iconSource: UM.Theme.getIcon("cross2")
+        iconSource: settingsDocked ? "../icons/settings_undock.svg" : "../icons/settings_dock.svg"
         width: UM.Theme.getSize("default_arrow").width
         height: UM.Theme.getSize("default_arrow").height
         color: UM.Theme.getColor("small_button_text")
