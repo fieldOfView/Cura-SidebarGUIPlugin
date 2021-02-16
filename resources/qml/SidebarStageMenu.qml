@@ -4,6 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
+import QtQuick.Controls.Private 1.0
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -11,9 +12,6 @@ import Cura 1.1 as Cura
 Item
 {
     id: stageMenu
-
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
 
     property var messageStack
     property var stagesListContainer
@@ -29,6 +27,8 @@ Item
     property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
     property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData) && settingsDocked
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
+
+    property var printSetupTooltip
 
     Component.onCompleted:
     {
@@ -132,6 +132,8 @@ Item
         headerBackground.height = mainWindowHeader.height + UM.Theme.getSize("default_margin").height
         main.anchors.top = main.parent.top
         main.anchors.topMargin = UM.Theme.getSize("default_margin").height
+
+        printSetupTooltip = tooltip // defined in Cura.qml
     }
 
     Connections
@@ -178,6 +180,27 @@ Item
         onActiveStageChanged:
         {
             prepareStageActive = (UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0)
+        }
+    }
+
+    Connections
+    {
+        target: tooltip
+        enabled: !settingsDocked
+        onTextChanged:
+        {
+            sidebarToolWindow.tooltipText = tooltip.text
+        }
+        onOpacityChanged:
+        {
+            if(tooltip.opacity == 0)
+            {
+                sidebarToolWindow.hideTooltip()
+            }
+            else if(tooltip.opacity == 1)
+            {
+                sidebarToolWindow.showTooltip()
+            }
         }
     }
 
@@ -284,24 +307,42 @@ Item
         minimumHeight: Math.floor(1.5 * minimumWidth)
         height: minimumHeight
 
+        property string tooltipText
+        function showTooltip()
+        {
+            /* The divider automatically adapts to 100% of the parent width and
+            wraps properly, so this causes the tooltips to be wrapped to the width
+            of the tooltip as set by the operating system. */
+            Tooltip.showText(printSetupWindow, Qt.point(printSetupWindow.mouseX, printSetupWindow.mouseY), "<div>" + tooltipText + "</div>")
+        }
+
+        function hideTooltip()
+        {
+            Tooltip.hideText()
+        }
+
         visible: !settingsDocked && settingsVisible
         onVisibleChanged:
         {
             if (visible)
             {
                 printSetupWindow.children = [sidebarContents]
+                printSetupTooltip.visible = false  // hide vestigial tooltip in main window
             }
             else
             {
                 printSetupSidebar.children = [sidebarContents]
+                printSetupTooltip.visible = true
             }
         }
 
-        Item
+        MouseArea
         {
             id: printSetupWindow
 
             anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
         }
     }
 }
