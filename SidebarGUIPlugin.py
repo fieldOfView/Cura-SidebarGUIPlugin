@@ -21,9 +21,13 @@ class SidebarGUIPlugin(Extension):
         self._prepare_stage_view_id = "SolidView" # can be "SolidView" or "XRayView"
 
         Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
-        Application.getInstance().getPreferences().addPreference("sidebargui/expand_extruder_configuration", False)
-        Application.getInstance().getPreferences().addPreference("sidebargui/expand_legend", True)
-        Application.getInstance().getPreferences().addPreference("sidebargui/docked_sidebar", True)
+        preferences = Application.getInstance().getPreferences()
+        preferences.addPreference("sidebargui/expand_extruder_configuration", False)
+        preferences.addPreference("sidebargui/expand_legend", True)
+        preferences.addPreference("sidebargui/docked_sidebar", True)
+        preferences.addPreference("sidebargui/settings_window_left", 65535)
+        preferences.addPreference("sidebargui/settings_window_top", 65535)
+        preferences.addPreference("sidebargui/settings_window_height", 0)
 
         self._controller = Application.getInstance().getController()
         self._controller.activeStageChanged.connect(self._onStageChanged)

@@ -315,8 +315,15 @@ Item
         minimumWidth: UM.Theme.getSize("print_setup_widget").width
         maximumWidth: minimumWidth
         width: minimumWidth
+
         minimumHeight: Math.floor(1.5 * minimumWidth)
-        height: minimumHeight
+        height: UM.Preferences.getValue("sidebargui/settings_window_height") != 0 ? UM.Preferences.getValue("sidebargui/settings_window_left") : minimumHeight
+        onHeightChanged: UM.Preferences.setValue("sidebargui/settings_window_height", height)
+
+        x: UM.Preferences.getValue("sidebargui/settings_window_left") != 65535 ? UM.Preferences.getValue("sidebargui/settings_window_left") : undefined
+        y: UM.Preferences.getValue("sidebargui/settings_window_top") != 65535 ? UM.Preferences.getValue("sidebargui/settings_window_top") : undefined
+        onXChanged: UM.Preferences.setValue("sidebargui/settings_window_left", x)
+        onYChanged: UM.Preferences.setValue("sidebargui/settings_window_top", y)
 
         property string tooltipText
         property var tooltipPosition
