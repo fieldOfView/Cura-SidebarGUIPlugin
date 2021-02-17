@@ -187,10 +187,6 @@ Item
     {
         target: tooltip
         enabled: !settingsDocked
-        onTextChanged:
-        {
-            sidebarToolWindow.tooltipText = tooltip.text
-        }
         onOpacityChanged:
         {
             if(tooltip.opacity == 0)
@@ -201,6 +197,21 @@ Item
             {
                 sidebarToolWindow.showTooltip()
             }
+        }
+        onTextChanged:
+        {
+            /* The div automatically adapts to 100% of the parent width and
+            wraps properly, so this causes the tooltips to be wrapped to the width
+            of the tooltip as set by the operating system. */
+
+            sidebarToolWindow.tooltipText =  "<div>" + tooltip.text + "</div>"
+        }
+        onYChanged:
+        {
+            sidebarToolWindow.tooltipPosition = Qt.point(
+                UM.Theme.getSize("default_margin").width,
+                tooltip.y + 3 * UM.Theme.getSize("default_margin").height
+            )
         }
     }
 
@@ -308,12 +319,10 @@ Item
         height: minimumHeight
 
         property string tooltipText
+        property var tooltipPosition
         function showTooltip()
         {
-            /* The divider automatically adapts to 100% of the parent width and
-            wraps properly, so this causes the tooltips to be wrapped to the width
-            of the tooltip as set by the operating system. */
-            Tooltip.showText(printSetupWindow, Qt.point(printSetupWindow.mouseX, printSetupWindow.mouseY), "<div>" + tooltipText + "</div>")
+            Tooltip.showText(printSetupWindow, tooltipPosition, tooltipText)
         }
 
         function hideTooltip()
@@ -336,13 +345,11 @@ Item
             }
         }
 
-        MouseArea
+        Item
         {
             id: printSetupWindow
 
             anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.NoButton
         }
     }
 }
