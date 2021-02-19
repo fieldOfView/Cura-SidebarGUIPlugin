@@ -5,12 +5,12 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.FlameProfiler import pyqtSlot
 
+from PyQt5.QtCore import QObject, QRectF
+
 try:
     from cura.Machines.ContainerTree import ContainerTree
 except ImportError:
     ContainerTree = None  # type: ignore
-
-from PyQt5.QtCore import QObject
 
 class SidebarGUIProxy(QObject):
     def __init__(self, parent = None) -> None:
@@ -66,3 +66,17 @@ class SidebarGUIProxy(QObject):
             containers_metadata = container_registry.findInstanceContainersMetadata(**search_criteria)
 
             return containers_metadata != []
+
+
+    @pyqtSlot("QVariant", result = bool)
+    def checkRectangleOnScreen(self, rectangle):
+        # Check if rectangle is not outside the currently available screens
+        application = Application.getInstance()
+        screen_found = False
+        for screen_number in range(0, application.desktop().screenCount()):
+            if rectangle.intersects(QRectF(application.desktop().availableGeometry(screen_number))):
+                screen_found = True
+                break
+        if not screen_found:
+            return False
+        return True
