@@ -310,7 +310,7 @@ Item
         id: sidebarToolWindow
         title: catalog.i18nc("@title:window", "Print Settings")
 
-        flags: Qt.Tool | Qt.WindowTitleHint;
+        flags: Qt.Tool | Qt.WindowTitleHint | Qt.CustomizeWindowHint;
 
         function boolCheck(value) //Hack to ensure a good match between python and qml.
         {
