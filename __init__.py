@@ -28,6 +28,10 @@ def __matchVersion():
     if cura_version == "master":
         Logger.log("d", "Running Cura from source; skipping version check")
         return True
+    if cura_version.startswith("Arachne_engine"):
+        Logger.log("d", "Running Cura Arachne preview; skipping version check")
+        return True
+
     cura_version = Version(cura_version)
     cura_version = Version([cura_version.getMajor(), cura_version.getMinor()])
 
