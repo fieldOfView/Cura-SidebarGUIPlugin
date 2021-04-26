@@ -39,6 +39,8 @@ Cura.ExpandableComponent
         onActiveViewChanged:
         {
             xrayViewCheckBox.checked = (activeView == "XRayView")
+            xrayViewCheckBox.visible = (activeView != "FastView")
+            fastViewLabel.visible = (activeView == "FastView")
         }
 
         property string activeView:
@@ -65,6 +67,18 @@ Cura.ExpandableComponent
             text: catalog.i18nc("@label", "X-Ray view")
             style: UM.Theme.styles.checkbox
             width: parent.width
+        }
+
+        Label
+        {
+            id: fastViewLabel
+            text: catalog.i18nc("@label", "Fast View")
+
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
         }
 
         Item

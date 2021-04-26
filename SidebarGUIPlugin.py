@@ -80,12 +80,15 @@ class SidebarGUIPlugin(Extension):
         active_view_id = self._controller.getActiveView().getPluginId()
 
         if active_stage_id == "PrepareStage":
+            if active_view_id not in ["SolidView", "XRayView"]:
+                self._controller.setActiveView("SolidView")
+                return
             self._prepare_stage_view_id = active_view_id
 
         if active_stage_id == "MonitorStage":
             return
 
-        if active_view_id == "SimulationView":
+        if active_view_id in ["SimulationView", "FastView"]: # FastView is provided by the RAWMouse plugin
             if active_stage_id != "PreviewStage":
                 self._controller.setActiveStage("PreviewStage")
         else:
