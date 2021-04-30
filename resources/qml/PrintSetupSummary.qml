@@ -75,7 +75,7 @@ Cura.RoundedRectangle
     property bool hasMaterials:
     {
         if (CuraSDKVersion >= "6.2.0") {
-            return Cura.MachineManager.activeMachine.hasMaterials
+            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasMaterials : false
         } else {
             return Cura.MachineManager.hasMaterials
         }
@@ -83,7 +83,7 @@ Cura.RoundedRectangle
     property bool hasVariants:
     {
         if (CuraSDKVersion >= "6.2.0") {
-            return Cura.MachineManager.activeMachine.hasVariants
+            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasVariants : false
         } else {
             return Cura.MachineManager.hasVariants
         }

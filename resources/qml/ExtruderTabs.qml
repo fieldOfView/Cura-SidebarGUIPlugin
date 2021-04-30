@@ -15,7 +15,7 @@ TabRow
     property bool hasMaterials:
     {
         if (CuraSDKVersion >= "6.2.0") {
-            return Cura.MachineManager.activeMachine.hasMaterials
+            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasMaterials : false
         } else {
             return Cura.MachineManager.hasMaterials
         }
@@ -23,7 +23,7 @@ TabRow
     property bool hasVariants:
     {
         if (CuraSDKVersion >= "6.2.0") {
-            return Cura.MachineManager.activeMachine.hasVariants
+            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasVariants : false
         } else {
             return Cura.MachineManager.hasVariants
         }
@@ -102,7 +102,7 @@ TabRow
                     property var extruderStack:
                     {
                         if (CuraSDKVersion >= "6.2.0") {
-                            return Cura.MachineManager.activeMachine.extruders[model.index];
+                            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.extruders[model.index] : undefined;
                         } else {
                             return Cura.MachineManager.getExtruder(model.index);
                         }
