@@ -105,7 +105,14 @@ Cura.RoundedRectangle
         Item
         {
             id: extruderConfiguration
-            visible: UM.Preferences.getValue("sidebargui/expand_extruder_configuration")
+            visible:
+            {
+                if (extruderSelector.visible)
+                {
+                    return UM.Preferences.getValue("sidebargui/expand_extruder_configuration")
+                }
+                return false
+            }
             width: parent.width
             height: visible ? childrenRect.height : 0
             children: [ configurationMenu.contentItem ]
@@ -137,22 +144,6 @@ Cura.RoundedRectangle
                     customConfiguration.children[3].children[0].height = 0
                     customConfiguration.children[3].children[1].padding = 0 // enabled/material/variant column
                     customConfiguration.children[3].children[1].spacing = UM.Theme.getSize("default_lining").height
-                }
-            }
-
-            Connections
-            {
-                target: extruderSelector
-                onVisibleChanged:
-                {
-                    if (!extruderSelector.visible)
-                    {
-                        extruderConfiguration.visible = false
-                    }
-                    else
-                    {
-                        extruderConfiguration.visible = UM.Preferences.getValue("sidebargui/expand_extruder_configuration")
-                    }
                 }
             }
         }
