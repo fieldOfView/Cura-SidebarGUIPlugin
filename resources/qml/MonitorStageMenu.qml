@@ -68,7 +68,8 @@ Item
         anchors.rightMargin: UM.Theme.getSize("print_setup_widget").width - width
         y: - Math.floor((UM.Theme.getSize("main_window_header").height + height) / 2)
 
-        Component.onCompleted: {
+        Component.onCompleted:
+        {
             machineSelection.children[1].visible = false // remove shadow
             if(isLE46) {
                 var machineSelectionHeader = machineSelection.children[0].children[3].children[0]

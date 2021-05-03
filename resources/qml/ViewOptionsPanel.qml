@@ -134,6 +134,17 @@ Rectangle
                 }
                 return "PrepareStageLegend.qml";
             }
+
+            onLoaded:
+            {
+                legendHeaderItem.children = [
+                    viewMenuComponent.item.contentItem.children[0],
+                    viewMenuComponent.item.contentItem.children[1]
+                ]
+                legendItems.children = [
+                    viewMenuComponent.item.contentItem
+                ]
+            }
         }
 
         Item
@@ -153,11 +164,9 @@ Rectangle
                     right: legendCollapseButton.left
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
-                children: [
-                    viewMenuComponent.item.contentItem.children[0],
-                    viewMenuComponent.item.contentItem.children[1]
-                ]
                 height: childrenRect.height
+
+                // populated by viewMenuComponent
             }
 
             UM.SimpleButton
@@ -187,7 +196,7 @@ Rectangle
             id: legendItems
             visible: UM.Preferences.getValue("sidebargui/expand_legend")
 
-            children: [viewMenuComponent.item.contentItem]
+            // populated by viewMenuComponent
         }
     }
 
