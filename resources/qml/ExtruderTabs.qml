@@ -101,7 +101,9 @@ TabRow
 
                     property var extruderStack:
                     {
-                        if (CuraSDKVersion >= "6.2.0") {
+                        if (CuraSDKVersion >= "7.0.0") {
+                            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.extruderList[model.index] : undefined;
+                        } else if (CuraSDKVersion >= "6.2.0") {
                             return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.extruders[model.index] : undefined;
                         } else {
                             return Cura.MachineManager.getExtruder(model.index);
