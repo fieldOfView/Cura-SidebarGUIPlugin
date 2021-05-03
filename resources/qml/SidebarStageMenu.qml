@@ -13,15 +13,14 @@ Item
 {
     id: stageMenu
 
-    property var messageStack
-    property var stagesListContainer
-    property var applicationLogo
-
     property bool is40
     property bool isLE44
     property bool isLE46
 
-    property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") > 0
+    property bool prepareStageActive: Qt.binding(function()
+    {
+        return UM.Controller.activeStage.toString().indexOf("PrepareStage") > 0
+    })
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
     property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
     property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
@@ -64,34 +63,49 @@ Item
         viewOrientationControls.anchors.margins = 0
 
         // adjust message stack position for sidebar
+        var messageStack
         if(is40)
         {
-            messageStack = base.contentItem.children[0].children[3].children[7] // declared as property above
+            messageStack = base.contentItem.children[0].children[3].children[7]
         }
         else if(isLE44)
         {
-            messageStack = base.contentItem.children[2].children[3].children[7] // declared as property above
+            messageStack = base.contentItem.children[2].children[3].children[7]
         }
         else
         {
-            messageStack = base.contentItem.children[2].children[3].children[8] // declared as property above
+            messageStack = base.contentItem.children[2].children[3].children[8]
         }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
-        messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+        messageStack.anchors.leftMargin = Qt.binding(function()
+        {
+            return Math.floor((base.width - printSetupSelector.width) / 2)
+        })
 
         // adjust stages menu position for sidebar
-        stagesListContainer = mainWindowHeader.children[1] // declared as property above
+        var stagesListContainer = mainWindowHeader.children[1]
         stagesListContainer.anchors.horizontalCenter = undefined
         stagesListContainer.anchors.left = stagesListContainer.parent.left
-        stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+        stagesListContainer.anchors.leftMargin = Qt.binding(function()
+        {
+            return Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+        })
+
 
         // hide application logo if there is no room for it
-        applicationLogo = mainWindowHeader.children[0] // declared as property above
-        applicationLogo.visible = stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
+        var applicationLogo = mainWindowHeader.children[0]
+        applicationLogo.visible = Qt.binding(function()
+        {
+            return stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
+        })
 
         // compensate viewport for full-height sidebar
-        base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
+        base.viewportRect = Qt.binding(function()
+        {
+            return Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
+        })
+
 
         // make settingview take up available height
         var printSetupContent = printSetupSelector.contentItem
@@ -138,25 +152,6 @@ Item
 
     Connections
     {
-        target: base
-        onWidthChanged:
-        {
-            // compensate viewport for full-height sidebar
-            base.viewportRect = Qt.rect(0, 0, (base.width - sidebarWidth) / base.width, 1.0)
-
-            // adjust message stack position for sidebar
-            messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
-
-            // adjust stages menu position for sidebar
-            stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
-
-            // hide application logo if there is no room for it
-            applicationLogo.visible = stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
-        }
-    }
-
-    Connections
-    {
         target: UM.Preferences
         onPreferenceChanged:
         {
@@ -171,15 +166,6 @@ Item
                     base.onWidthChanged(base.width)
                     break
             }
-        }
-    }
-
-    Connections
-    {
-        target: UM.Controller
-        onActiveStageChanged:
-        {
-            prepareStageActive = (UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0)
         }
     }
 

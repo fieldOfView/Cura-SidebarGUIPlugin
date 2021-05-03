@@ -14,9 +14,6 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    property var messageStack
-    property var stagesListContainer
-
     property bool is40
     property bool isLE44
     property bool isLE46
@@ -28,25 +25,37 @@ Item
         isLE46 = (CuraSDKVersion <= "7.2.0") && UM.Application.version != "master"
 
         // adjust message stack position for sidebar
-        messageStack = base.contentItem.children[0].children[3].children[8]
-        messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+        var messageStack
+        if(is40)
+        {
+            messageStack = base.contentItem.children[0].children[3].children[7]
+        }
+        else if(isLE44)
+        {
+            messageStack = base.contentItem.children[2].children[3].children[7]
+        }
+        else
+        {
+            messageStack = base.contentItem.children[2].children[3].children[8]
+        }
+        messageStack.anchors.leftMargin = Qt.binding(function()
+        {
+            return Math.floor((base.width) / 2)
+        })
 
         // adjust stages menu position for sidebar
-        stagesListContainer = mainWindowHeader.children[1]
-        stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
-    }
-
-    Connections
-    {
-        target: base
-        onWidthChanged:
+        var stagesListContainer = mainWindowHeader.children[1]
+        stagesListContainer.anchors.leftMargin = Qt.binding(function()
         {
-            // adjust message stack position for sidebar
-            messageStack.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width) / 2)
+            return Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
+        })
 
-            // adjust stages menu position for sidebar
-            stagesListContainer.anchors.leftMargin = Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
-        }
+        // hide application logo if there is no room for it
+        var applicationLogo = mainWindowHeader.children[0] // declared as property above
+        applicationLogo.visible = Qt.binding(function()
+        {
+            return stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
+        })
     }
 
     Cura.MachineSelector
