@@ -17,20 +17,12 @@ Item
     property bool isLE44
     property bool isLE46
 
-    property bool prepareStageActive: Qt.binding(function()
-    {
-        return UM.Controller.activeStage.toString().indexOf("PrepareStage") > 0
-    })
+    property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
     property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
     property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
     property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData) && settingsDocked
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
-
-    onSidebarVisibleChanged:
-    {
-        base.onWidthChanged(base.width)
-    }
 
     property var printSetupTooltip
 
@@ -187,12 +179,6 @@ Item
         }
     }
 
-    onPreSlicedDataChanged:
-    {
-        settingsVisible = UM.Preferences.getValue("view/settings_visible")
-        base.onWidthChanged(base.width)
-    }
-
     OpenFileButton {}
 
     Cura.MachineSelector
@@ -334,7 +320,7 @@ Item
             Tooltip.hideText()
         }
 
-        visible: !settingsDocked && settingsVisible
+        visible: !settingsDocked && settingsVisible &&  (prepareStageActive || !preSlicedData)
         onVisibleChanged:
         {
             if (visible)
