@@ -27,6 +27,11 @@ Item
     property bool sidebarVisible: settingsVisible && (prepareStageActive || !preSlicedData) && settingsDocked
     property real sidebarWidth: sidebarVisible ? printSetupSelector.width : 0
 
+    onSidebarVisibleChanged:
+    {
+        base.onWidthChanged(base.width)
+    }
+
     property var printSetupTooltip
 
     Component.onCompleted:
@@ -148,25 +153,6 @@ Item
         main.anchors.topMargin = UM.Theme.getSize("default_margin").height
 
         printSetupTooltip = tooltip // defined in Cura.qml
-    }
-
-    Connections
-    {
-        target: UM.Preferences
-        onPreferenceChanged:
-        {
-            switch (preference)
-            {
-                case "view/settings_visible":
-                    settingsVisible = UM.Preferences.getValue("view/settings_visible")
-                    base.onWidthChanged(base.width)
-                    break
-                case "sidebargui/docked_sidebar":
-                    settingsDocked = UM.Preferences.getValue("sidebargui/docked_sidebar")
-                    base.onWidthChanged(base.width)
-                    break
-            }
-        }
     }
 
     Connections

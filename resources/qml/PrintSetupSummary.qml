@@ -132,6 +132,7 @@ Cura.RoundedRectangle
         onClicked:
         {
             UM.Preferences.setValue("view/settings_visible", true)
+            stageMenu.settingsVisible = true
         }
     }
 }

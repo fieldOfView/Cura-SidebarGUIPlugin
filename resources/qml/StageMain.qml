@@ -11,10 +11,10 @@ Loader
     id: loader
     source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
 
-    property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
-    property bool settingsVisible: UM.Preferences.getValue("view/settings_visible")
-    property bool settingsDocked: UM.Preferences.getValue("sidebargui/docked_sidebar")
-    property bool sidebarVisible: settingsVisible && !preSlicedData && settingsDocked
+    property bool sidebarVisible:
+    {
+        return base.viewportRect.width != 1;
+    }
 
     onLoaded:
     {
@@ -39,7 +39,7 @@ Loader
                 if(sidebarVisible)
                     return UM.Theme.getSize("default_margin").height;
                 else
-                    return sidebarFooter.height + UM.Theme.getSize("default_margin").height
+                    return sidebarFooter.height + UM.Theme.getSize("default_margin").height;
             });
 
             var layerSlider = item.children[2];
@@ -53,31 +53,13 @@ Loader
             {
                 var unavailableHeight = (stageMenu.item.children[2].height + pathSlider.height + 5 * UM.Theme.getSize("default_margin").height);
                 if(!sidebarVisible)
-                    unavailableHeight = (sidebarFooter.height + stageMenu.item.children[3].height + pathSlider.height + 3 * UM.Theme.getSize("default_margin").height)
+                    unavailableHeight = (sidebarFooter.height + stageMenu.item.children[3].height + pathSlider.height + 5 * UM.Theme.getSize("default_margin").height)
 
                 return Math.min(
                         UM.Theme.getSize("slider_layerview_size").height,
                         contentItem.height - unavailableHeight
-                    );
+                );
             })
-        }
-    }
-
-    Connections
-    {
-        target: UM.Preferences
-        onPreferenceChanged:
-        {
-            switch (preference)
-            {
-                case "view/settings_visible":
-                    settingsVisible = UM.Preferences.getValue("view/settings_visible")
-                    base.onWidthChanged(base.width)
-                    break
-                case "sidebargui/docked_sidebar":
-                    settingsDocked = UM.Preferences.getValue("sidebargui/docked_sidebar")
-                    break
-            }
         }
     }
 }

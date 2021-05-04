@@ -57,6 +57,7 @@ Item
         onClicked:
         {
             UM.Preferences.setValue("sidebargui/docked_sidebar", !UM.Preferences.getValue("sidebargui/docked_sidebar"))
+            stageMenu.settingsDocked = UM.Preferences.getValue("sidebargui/docked_sidebar")
         }
     }
 
@@ -79,6 +80,7 @@ Item
         onClicked:
         {
             UM.Preferences.setValue("view/settings_visible", false)
+            stageMenu.settingsVisible = false
         }
     }
 }
