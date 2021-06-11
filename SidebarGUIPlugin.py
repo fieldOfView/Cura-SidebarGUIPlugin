@@ -17,7 +17,6 @@ class SidebarGUIPlugin(Extension):
 
     def __init__(self):
         super().__init__()
-
         self._prepare_stage_view_id = "SolidView" # can be "SolidView" or "XRayView"
 
         Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
@@ -58,6 +57,12 @@ class SidebarGUIPlugin(Extension):
         preview_stage.addDisplayComponent("menu", sidebar_component_path)
         preview_stage.addDisplayComponent("main", main_component_path)
 
+        # SmartSlicePlugin stage is provided by the SmartSlicePlugin plugin
+        if "SmartSlicePlugin" in self._controller.getAllStages():
+            smartslice_stage = self._controller.getStage("SmartSlicePlugin")
+            smartslice_stage.addDisplayComponent("menu", sidebar_component_path)
+            smartslice_stage.addDisplayComponent("main", main_component_path)
+
         monitor_stage = self._controller.getStage("MonitorStage")
         monitor_stage.addDisplayComponent("menu", monitor_menu_component_path)
 
@@ -79,13 +84,15 @@ class SidebarGUIPlugin(Extension):
         active_stage_id = self._controller.getActiveStage().getPluginId()
         active_view_id = self._controller.getActiveView().getPluginId()
 
+        if active_stage_id == "SmartSlicePlugin": # SmartSlicePlugin view is provided by the SmartSlicePlugin plugin
+            return
+
         if active_stage_id == "PrepareStage":
             if active_view_id not in ["SolidView", "XRayView"]:
                 self._controller.setActiveView("SolidView")
                 return
             self._prepare_stage_view_id = active_view_id
-
-        if active_stage_id == "MonitorStage":
+        elif active_stage_id == "MonitorStage":
             return
 
         if active_view_id in ["SimulationView", "FastView"]: # FastView is provided by the RAWMouse plugin

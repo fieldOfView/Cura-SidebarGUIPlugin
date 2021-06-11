@@ -39,8 +39,21 @@ Cura.ExpandableComponent
         onActiveViewChanged:
         {
             xrayViewCheckBox.checked = (activeView == "XRayView")
-            xrayViewCheckBox.visible = (activeView != "FastView")
-            fastViewLabel.visible = (activeView == "FastView")
+            xrayViewCheckBox.visible = (activeView != "FastView" && activeView != "SmartSliceView")
+            switch(activeView)
+            {
+                case "FastView":
+                    externalViewLabel.visible = true
+                    externalViewLabel.text = catalog.i18nc("@label", "Fast View")
+                    break;
+                case "SmartSliceView":
+                    externalViewLabel.visible = true
+                    externalViewLabel.text = catalog.i18nc("@label", "Smart Slice")
+                    break;
+                default:
+                    externalViewLabel.visible = false
+                    break;
+            }
         }
 
         property string activeView:
@@ -53,6 +66,7 @@ Cura.ExpandableComponent
         {
             id: xrayViewCheckBox
             checked: parent.activeView == "XRayView"
+            visible: !externalViewLabel.visible
             onClicked:
             {
                 if(checked && parent.activeView != "XRayView")
@@ -71,8 +85,7 @@ Cura.ExpandableComponent
 
         Label
         {
-            id: fastViewLabel
-            text: catalog.i18nc("@label", "Fast View")
+            id: externalViewLabel
 
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
