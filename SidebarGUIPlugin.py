@@ -14,10 +14,9 @@ from .SidebarGUIProxy import SidebarGUIProxy
 
 
 class SidebarGUIPlugin(Extension):
-
     def __init__(self):
         super().__init__()
-        self._prepare_stage_view_id = "SolidView" # can be "SolidView" or "XRayView"
+        self._prepare_stage_view_id = "SolidView"  # can be "SolidView" or "XRayView"
 
         Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
         preferences = Application.getInstance().getPreferences()
@@ -43,11 +42,28 @@ class SidebarGUIPlugin(Extension):
         Logger.log("d", "Registering replacement stages")
 
         engine = Application.getInstance()._qml_engine
-        qmlRegisterSingletonType(SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy)
+        qmlRegisterSingletonType(
+            SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy
+        )
 
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "SidebarStageMenu.qml")
-        main_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "StageMain.qml")
-        monitor_menu_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "qml", "MonitorStageMenu.qml")
+        sidebar_component_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "resources",
+            "qml",
+            "SidebarStageMenu.qml",
+        )
+        main_component_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "resources",
+            "qml",
+            "StageMain.qml",
+        )
+        monitor_menu_component_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "resources",
+            "qml",
+            "MonitorStageMenu.qml",
+        )
 
         prepare_stage = self._controller.getStage("PrepareStage")
         prepare_stage.addDisplayComponent("menu", sidebar_component_path)
@@ -66,7 +82,6 @@ class SidebarGUIPlugin(Extension):
         monitor_stage = self._controller.getStage("MonitorStage")
         monitor_stage.addDisplayComponent("menu", monitor_menu_component_path)
 
-
     def _onStageChanged(self):
         active_stage_id = self._controller.getActiveStage().getPluginId()
         view_id = ""
@@ -76,15 +91,19 @@ class SidebarGUIPlugin(Extension):
         elif active_stage_id == "PreviewStage":
             view_id = "SimulationView"
 
-        if view_id and (self._controller.getActiveView() is None or view_id != self._controller.getActiveView().getPluginId()):
+        if view_id and (
+            self._controller.getActiveView() is None
+            or view_id != self._controller.getActiveView().getPluginId()
+        ):
             self._controller.setActiveView(view_id)
-
 
     def _onViewChanged(self):
         active_stage_id = self._controller.getActiveStage().getPluginId()
         active_view_id = self._controller.getActiveView().getPluginId()
 
-        if active_stage_id == "SmartSlicePlugin": # SmartSlicePlugin view is provided by the SmartSlicePlugin plugin
+        if (
+            active_stage_id == "SmartSlicePlugin"
+        ):  # SmartSlicePlugin view is provided by the SmartSlicePlugin plugin
             return
 
         if active_stage_id == "PrepareStage":
@@ -95,13 +114,15 @@ class SidebarGUIPlugin(Extension):
         elif active_stage_id == "MonitorStage":
             return
 
-        if active_view_id in ["SimulationView", "FastView"]: # FastView is provided by the RAWMouse plugin
+        if active_view_id in [
+            "SimulationView",
+            "FastView",
+        ]:  # FastView is provided by the RAWMouse plugin
             if active_stage_id != "PreviewStage":
                 self._controller.setActiveStage("PreviewStage")
         else:
             if active_stage_id != "PrepareStage":
                 self._controller.setActiveStage("PrepareStage")
-
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the sidebargui.qml is already created
     #   as this caused some issues.
