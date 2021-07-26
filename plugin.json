@@ -1,11 +1,11 @@
 {
     "name": "Sidebar GUI",
     "author": "fieldOfView",
-    "version": "4.1.2-DEV",
+    "version": "4.1.2",
     "minimum_cura_version": "4.0",
     "maximum_cura_version": "4.10",
     "description": "Provides an alternative interface which restores the sidebar",
     "api": "6.0.0",
-    "supported_sdk_versions": ["6.0.0", "6.1.0", "6.2.0", "6.3.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"],
+    "supported_sdk_versions": ["6.0.0", "6.1.0", "6.2.0", "6.3.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0", "7.6.0"],
     "i18n-catalog": "cura"
 }
