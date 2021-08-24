@@ -194,8 +194,8 @@ Item
             rightMargin: UM.Theme.getSize("thin_margin").width
         }
         iconSource: settingsDocked ? "../icons/settings_undock.svg" : "../icons/settings_dock.svg"
-        width: UM.Theme.getSize("print_setup_icon").width
-        height: UM.Theme.getSize("print_setup_icon").height
+        width: UM.Theme.getSize("default_arrow").width + UM.Theme.getSize("default_lining").width
+        height: width
         color: UM.Theme.getColor("small_button_text")
 
         onClicked:
@@ -217,8 +217,8 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         iconSource: UM.Theme.getIcon("cross1")
-        width: UM.Theme.getSize("default_arrow").width
-        height: UM.Theme.getSize("default_arrow").height
+        width: UM.Theme.getSize("default_arrow").width + UM.Theme.getSize("default_lining").width
+        height: width
         color: UM.Theme.getColor("small_button_text")
 
         onClicked:

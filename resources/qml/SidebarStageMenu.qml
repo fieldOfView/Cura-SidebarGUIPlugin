@@ -16,6 +16,7 @@ Item
     property bool is40
     property bool isLE44
     property bool isLE46
+    property bool isLE410
 
     property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
@@ -30,7 +31,8 @@ Item
     {
         is40 = (CuraSDKVersion == "6.0.0")
         isLE44 = (CuraSDKVersion <= "7.0.0")
-        isLE46 = (CuraSDKVersion <= "7.2.0") && UM.Application.version != "master"
+        isLE46 = (CuraSDKVersion <= "7.2.0")
+        isLE410 = (CuraSDKVersion <= "7.6.0") && UM.Application.version != "master"
         if(is40)
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
@@ -43,9 +45,13 @@ Item
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.5 - 4.6")
         }
+        else if(isLE410)
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.7 - 4.10")
+        }
         else
         {
-             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.7 and newer")
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.11 and newer")
         }
 
         // top-align toolbar (defined in Cura.qml)
@@ -179,7 +185,19 @@ Item
         }
     }
 
-    OpenFileButton {}
+    Loader
+    {
+        anchors.left: parent.left
+        anchors.leftMargin: -UM.Theme.getSize("default_lining").width
+        source:
+        {
+            if(isLE410) {
+                return "OpenFileButton40.qml";
+            } else {
+                return "OpenFileButton411.qml";
+            }
+        }
+    }
 
     Cura.MachineSelector
     {
@@ -191,8 +209,13 @@ Item
         y: - Math.floor((UM.Theme.getSize("main_window_header").height + height) / 2)
 
         Component.onCompleted: {
-            machineSelection.children[1].visible = false // remove shadow
-            if(isLE46) {
+            if(isLE410)
+            {
+                machineSelection.children[1].visible = false // remove shadow
+            }
+
+            if(isLE46)
+            {
                 var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
             } else {
                 var machineSelectionHeader = machineSelection.children[0].children[3].children[1]

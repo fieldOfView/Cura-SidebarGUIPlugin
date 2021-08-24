@@ -17,12 +17,14 @@ Item
     property bool is40
     property bool isLE44
     property bool isLE46
+    property bool isLE410
 
     Component.onCompleted:
     {
         is40 = (CuraSDKVersion == "6.0.0")
         isLE44 = (CuraSDKVersion <= "7.0.0")
-        isLE46 = (CuraSDKVersion <= "7.2.0") && UM.Application.version != "master"
+        isLE46 = (CuraSDKVersion <= "7.2.0")
+        isLE410 = (CuraSDKVersion <= "7.6.0") && UM.Application.version != "master"
 
         // adjust message stack position for sidebar
         var messageStack
@@ -70,8 +72,13 @@ Item
 
         Component.onCompleted:
         {
-            machineSelection.children[1].visible = false // remove shadow
-            if(isLE46) {
+            if(isLE410)
+            {
+                machineSelection.children[1].visible = false // remove shadow
+            }
+
+            if(isLE46)
+            {
                 var machineSelectionHeader = machineSelection.children[0].children[3].children[0]
             } else {
                 var machineSelectionHeader = machineSelection.children[0].children[3].children[1]

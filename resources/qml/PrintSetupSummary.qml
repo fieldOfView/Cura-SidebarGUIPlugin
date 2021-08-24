@@ -47,29 +47,12 @@ Cura.RoundedRectangle
         anchors
         {
             left: parent.left
-            right: collapseButton.left
+            right: parent.right
             top: parent.top
 
             leftMargin: UM.Theme.getSize("default_margin").width
             topMargin: UM.Theme.getSize("default_margin").width
         }
-    }
-
-    UM.RecolorImage
-    {
-        id: collapseButton
-        anchors
-        {
-            verticalCenter: printSetupSummary.verticalCenter
-
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-        source: UM.Theme.getIcon("pencil")
-        visible: summaryEnabled
-        width: UM.Theme.getSize("action_button_icon").width
-        height: UM.Theme.getSize("action_button_icon").height
-        color: UM.Theme.getColor("small_button_text")
     }
 
     property bool hasMaterials:
