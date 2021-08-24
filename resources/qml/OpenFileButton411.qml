@@ -39,7 +39,7 @@ Button
             anchors.centerIn: parent
             width: parent.width - UM.Theme.getSize("default_margin").width
             height: parent.height - UM.Theme.getSize("default_margin").height
-            source: UM.Theme.getIcon("load")
+            source: UM.Theme.getIcon("Folder", "medium")
             color: UM.Theme.getColor("icon")
 
             sourceSize.height: height

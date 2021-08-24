@@ -62,7 +62,19 @@ Rectangle
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width - 2 * UM.Theme.getSize("default_lining").width
 
-            Cura.ViewOrientationControls {}
+            Cura.ViewOrientationControls
+            {
+                Component.onCompleted:
+                {
+                    if(!isLE410)
+                    {
+                        for(var child_nr in children)
+                        {
+                            children[child_nr].iconMargin = 3 * UM.Theme.getSize("default_lining").width
+                        }
+                    }
+                }
+            }
 
             UM.SimpleButton
             {
