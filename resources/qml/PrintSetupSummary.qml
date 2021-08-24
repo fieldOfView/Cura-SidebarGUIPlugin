@@ -72,7 +72,7 @@ Cura.RoundedRectangle
         }
     }
 
-    ExtruderTabs
+    Loader
     {
         id: extruderSummary
         enabled: false
@@ -87,6 +87,16 @@ Cura.RoundedRectangle
             leftMargin: UM.Theme.getSize("default_margin").width
             rightMargin: UM.Theme.getSize("default_margin").width
             bottomMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        source:
+        {
+            var is411 = (CuraSDKVersion >= "7.7.0");
+            if(is411) {
+                return "ExtruderTabs411.qml";
+            } else {
+                return "ExtruderTabs40.qml";
+            }
         }
     }
 

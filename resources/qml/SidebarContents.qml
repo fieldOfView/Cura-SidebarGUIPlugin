@@ -55,7 +55,7 @@ Cura.RoundedRectangle
                 color: UM.Theme.getColor("lining")
                 visible: extruderSelector.visible && extruderSelector.enabled
             }
-            ExtruderTabs
+            Loader
             {
                 id: extruderSelector
                 enabled:
@@ -76,6 +76,16 @@ Cura.RoundedRectangle
                     leftMargin: UM.Theme.getSize("default_margin").width + 5 * UM.Theme.getSize("default_lining").width
                     right: showExtruderConfigurationPanel.left
                     rightMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_lining").width
+                }
+
+                source:
+                {
+                    var is411 = (CuraSDKVersion >= "7.7.0");
+                    if(is411) {
+                        return "ExtruderTabs411.qml";
+                    } else {
+                        return "ExtruderTabs40.qml";
+                    }
                 }
             }
 
