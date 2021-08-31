@@ -141,7 +141,7 @@ TabRow
     Connections
     {
         target: Cura.ExtruderManager
-        onActiveExtruderChanged:
+        function onActiveExtruderChanged()
         {
             tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
         }
@@ -153,7 +153,7 @@ TabRow
     Connections
     {
         target: repeater.model
-        onModelChanged:
+        function onModelChanged()
         {
             tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
         }
