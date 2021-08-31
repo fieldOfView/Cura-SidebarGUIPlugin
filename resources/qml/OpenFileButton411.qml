@@ -69,6 +69,22 @@ Button
 
             sourceSize.height: height
         }
+
+        UM.RecolorImage
+        {
+            anchors
+            {
+                right: parent.right
+                rightMargin: -4 * UM.Theme.getSize("default_lining").width
+                bottom: parent.bottom
+                bottomMargin: -2 * UM.Theme.getSize("default_lining").height
+            }
+            source: UM.Theme.getIcon("ChevronSingleDown")
+            visible: fileProviderModel.count > 1
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
+            color: UM.Theme.getColor("icon")
+        }
     }
 
     background: Cura.RoundedRectangle
