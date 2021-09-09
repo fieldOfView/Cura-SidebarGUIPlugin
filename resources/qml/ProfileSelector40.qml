@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Aldo Hoeben / fieldOfView
+// Copyright (c) 2021 Aldo Hoeben / fieldOfView
 // SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.10
@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 Item
 {
-    width: parent.width
+    width: parent.width - 2 * UM.Theme.getSize("thick_margin").width - 2 * UM.Theme.getSize("default_lining").width
     height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
 
     Cura.GlobalProfileSelector
