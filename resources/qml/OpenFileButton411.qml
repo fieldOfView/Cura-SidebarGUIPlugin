@@ -15,7 +15,7 @@ Button
     property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     height: UM.Theme.getSize("button").height
-    width: height + 4 * UM.Theme.getSize("default_lining").width // There's some magic going on here
+    width: height
     onClicked:
     {
         if (fileProviderModel.count <= 1)
@@ -104,9 +104,6 @@ Button
     Popup
     {
         id: openFileButtonMenu
-
-        // Ensure that the content is located directly below the headerItem
-        //y: background.height + base.popupOffset
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
