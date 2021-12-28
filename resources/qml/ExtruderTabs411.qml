@@ -113,7 +113,7 @@ TabRow
 
                     status:
                     {
-                        if (tabBar.hasMaterials || tabBar.hasVariants)
+                        if (model.enabled && (tabBar.hasMaterials || tabBar.hasVariants))
                         {
                             if (extruderStack != undefined && Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True")
                             {
@@ -125,6 +125,38 @@ TabRow
                             }
                         }
                         return UM.StatusIcon.Status.NEUTRAL
+                    }
+
+                    MouseArea // Connection status tooltip hover area
+                    {
+                        id: tooltipHoverArea
+                        anchors.fill: parent
+                        hoverEnabled: tooltip.text != ""
+                        acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                        onEntered: tooltip.show()
+                        onExited: tooltip.hide()
+                    }
+
+                    Cura.ToolTip
+                    {
+                        id: tooltip
+                        x: 0
+                        y: parent.height + UM.Theme.getSize("default_margin").height
+                        width: UM.Theme.getSize("tooltip").width
+                        targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
+                        text:
+                        {
+                            if (configurationWarning.status == UM.StatusIcon.Status.ERROR)
+                            {
+                                return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
+                            }
+                            if (configurationWarning.status == UM.StatusIcon.Status.WARNING)
+                            {
+                                return catalog.i18nc("@tooltip", "There are no profiles matching the configuration of this extruder.")
+                            }
+                            return ""
+                        }
                     }
                 }
             }
