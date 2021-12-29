@@ -1,7 +1,7 @@
 {
     "name": "Sidebar GUI",
     "author": "fieldOfView",
-    "version": "4.2.2-DEV",
+    "version": "4.2.2",
     "minimum_cura_version": "4.0",
     "maximum_cura_version": "4.13",
     "description": "Provides an alternative interface which restores the sidebar",
