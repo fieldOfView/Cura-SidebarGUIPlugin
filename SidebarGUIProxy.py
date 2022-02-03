@@ -12,6 +12,10 @@ try:
 except ImportError:
     ContainerTree = None  # type: ignore
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cura.Settings.ExtruderStack import ExtruderStack
 
 class SidebarGUIProxy(QObject):
     def __init__(self, parent=None) -> None:
@@ -19,7 +23,7 @@ class SidebarGUIProxy(QObject):
         Logger.log("d", "SidebarGUI proxy created")
 
     @pyqtSlot("QVariant", result=bool)
-    def getExtruderHasQualityForMaterial(self, extruder_stack):
+    def getExtruderHasQualityForMaterial(self, extruder_stack: "ExtruderStack") -> bool:
         application = Application.getInstance()
         global_stack = application.getGlobalContainerStack()
         if not global_stack or not extruder_stack:
@@ -30,20 +34,26 @@ class SidebarGUIProxy(QObject):
 
         if ContainerTree is not None:
             # Post Cura 4.4; use ContainerTree to find out if there are supported qualities
-            container_tree = ContainerTree.getInstance()
-            machine_node = container_tree.machines[global_stack.definition.getId()]
-            nodes = set()  # type: Set[MaterialNode]
+            machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
             active_variant_name = extruder_stack.variant.getMetaDataEntry("name")
-            if active_variant_name not in machine_node.variants:
+            try:
+                active_variant_node = machine_node.variants[active_variant_name]
+            except KeyError:
                 Logger.log("w", "Could not find the variant %s", active_variant_name)
                 return True
-            active_variant_node = machine_node.variants[active_variant_name]
-            active_material_node = active_variant_node.materials[
-                extruder_stack.material.getMetaDataEntry("base_file")
-            ]
 
-            return list(active_material_node.qualities.keys())[0] != "empty_quality"
+            material_base_file = extruder_stack.material.getMetaDataEntry("base_file")
+            try:
+                active_material_node = active_variant_node.materials[material_base_file]
+            except KeyError:
+                Logger.log("w", "Could not find material %s for the current variant", material_base_file)
+                return False
+
+            active_material_node_qualities = active_material_node.qualities
+            if not active_material_node_qualities:
+                return False
+            return list(active_material_node_qualities.keys())[0] != "empty_quality"
 
         else:
             # Pre Cura 4.4; use MaterialManager et al to find out if there are supported qualities
