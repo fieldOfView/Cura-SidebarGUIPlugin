@@ -144,7 +144,14 @@ Rectangle
                 {
                     return UM.Controller.activeView.stageMenuComponent;
                 }
-                return "PrepareStageLegend.qml";
+                if (isLE413)
+                {
+                    return "PrepareStageLegend40.qml";
+                }
+                else
+                {
+                    return "PrepareStageLegend50.qml";
+                }
             }
 
             onLoaded:

@@ -2,7 +2,7 @@
 // SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.4
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.3
 
 import UM 1.0 as UM
 

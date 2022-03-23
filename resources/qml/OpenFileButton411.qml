@@ -15,7 +15,7 @@ Button
     property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     height: UM.Theme.getSize("button").height
-    width: height
+    width: Math.floor(height * 1.125) // Magic number is magic
     onClicked:
     {
         if (fileProviderModel.count <= 1)
