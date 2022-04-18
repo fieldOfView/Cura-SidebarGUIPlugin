@@ -5,7 +5,10 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.FlameProfiler import pyqtSlot
 
-from PyQt5.QtCore import QObject, QRectF
+try:
+    from PyQt6.QtCore import QObject, QRectF
+except ImportError:
+    from PyQt5.QtCore import QObject, QRectF
 
 try:
     from cura.Machines.ContainerTree import ContainerTree

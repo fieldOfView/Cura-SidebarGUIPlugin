@@ -7,8 +7,12 @@ from UM.Extension import Extension
 from UM.Resources import Resources
 from UM.Logger import Logger
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtQml import qmlRegisterSingletonType
+try:
+    from PyQt6.QtCore import QUrl
+    from PyQt6.QtQml import qmlRegisterSingletonType
+except ImportError:
+    from PyQt5.QtCore import QUrl
+    from PyQt5.QtQml import qmlRegisterSingletonType
 
 from .SidebarGUIProxy import SidebarGUIProxy
 
@@ -42,9 +46,14 @@ class SidebarGUIPlugin(Extension):
         Logger.log("d", "Registering replacement stages")
 
         engine = Application.getInstance()._qml_engine
-        qmlRegisterSingletonType(
-            SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy
-        )
+        try:
+            qmlRegisterSingletonType(
+                SidebarGUIProxy, "Cura", 1, 0, self.getProxy, "SidebarGUIPlugin"
+            )
+        except TypeError:
+            qmlRegisterSingletonType(
+                SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy
+            )
 
         sidebar_component_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
