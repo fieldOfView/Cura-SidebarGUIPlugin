@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Aldo Hoeben / fieldOfView
+// Copyright (c) 2022 Aldo Hoeben / fieldOfView
 // SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 // Copyright (c) 2018 Ultimaker B.V.
