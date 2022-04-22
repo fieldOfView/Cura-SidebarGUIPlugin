@@ -79,9 +79,13 @@ Item
         {
             messageStack = base.contentItem.children[2].children[3].children[7]
         }
-        else
+        else if(isLE413)
         {
             messageStack = base.contentItem.children[2].children[3].children[8]
+        }
+        else
+        {
+            messageStack = base.contentItem.children[3].children[3].children[8]
         }
         messageStack.anchors.horizontalCenter = undefined
         messageStack.anchors.left = messageStack.parent.left
@@ -161,7 +165,7 @@ Item
     {
         target: tooltip
         enabled: !settingsDocked
-        onOpacityChanged:
+        onOpacityChanged: function()
         {
             if(tooltip.opacity == 0)
             {
@@ -172,7 +176,7 @@ Item
                 sidebarToolWindow.showTooltip()
             }
         }
-        onTextChanged:
+        onTextChanged: function()
         {
             /* The div automatically adapts to 100% of the parent width and
             wraps properly, so this causes the tooltips to be wrapped to the width
@@ -180,7 +184,7 @@ Item
 
             sidebarToolWindow.tooltipText =  "<div>" + tooltip.text + "</div>"
         }
-        onYChanged:
+        onYChanged: function()
         {
             sidebarToolWindow.tooltipPosition = Qt.point(
                 UM.Theme.getSize("default_margin").width,
@@ -197,8 +201,10 @@ Item
         {
             if(isLE410) {
                 return "OpenFileButton40.qml";
-            } else {
+            } else if(isLE413) {
                 return "OpenFileButton411.qml";
+            } else {
+                return "OpenFileButton50.qml";
             }
         }
     }
@@ -238,12 +244,21 @@ Item
         }
     }
 
-    ViewOptionsPanel
+    Loader
     {
         id: viewOptionsPanel
 
         anchors.right: printSetupSidebar.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        source:
+        {
+            if(isLE413) {
+                return "ViewOptionsPanel40.qml";
+            } else {
+                return "ViewOptionsPanel50.qml";
+            }
+        }
     }
 
     PrintSetupSummary

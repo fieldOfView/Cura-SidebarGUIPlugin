@@ -31,6 +31,9 @@ TabRow
 
     visible: hasMaterials || hasVariants
     width: parent.width
+    height: UM.Theme.getSize("extruder_icon").height + UM.Theme.getSize("narrow_margin").height
+
+    property int extrudersCount: extrudersModel.count
 
     Repeater
     {
@@ -38,6 +41,7 @@ TabRow
         model: extrudersModel
         delegate: TabRowButton
         {
+            width: Math.floor((tabBar.width - (extrudersCount - 1) * UM.Theme.getSize("narrow_margin").width) / extrudersCount)
             contentItem: Item
             {
                 Cura.ExtruderIcon
@@ -52,7 +56,7 @@ TabRow
                 }
 
                 // Label for the brand of the material
-                Label
+                UM.Label
                 {
                     id: typeAndBrandNameLabel
 
@@ -75,7 +79,7 @@ TabRow
                 }
 
                 // Label that shows the name of the variant
-                Label
+                UM.Label
                 {
                     id: variantLabel
 
@@ -115,7 +119,7 @@ TabRow
                     {
                         if (model.enabled && (tabBar.hasMaterials || tabBar.hasVariants))
                         {
-                            if (extruderStack != undefined && Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True")
+                            if (extruderStack != undefined && Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible") != "True")
                             {
                                 return UM.StatusIcon.Status.ERROR
                             }

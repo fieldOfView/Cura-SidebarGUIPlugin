@@ -33,8 +33,11 @@ Cura.RoundedRectangle
             height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
             source:
             {
-                var is44 = (CuraSDKVersion >= "7.0.0");
-                if(is44) {
+                var isGT44 = (CuraSDKVersion >= "7.0.0");
+                var isGT50 = (CuraSDKVersion >= "8.0.0") || UM.Application.version == "master";
+                if(isGT50) {
+                    return "ProfileSelector50.qml";
+                } else if(isGT44) {
                     return "ProfileSelector44.qml";
                 } else {
                     return "ProfileSelector40.qml";

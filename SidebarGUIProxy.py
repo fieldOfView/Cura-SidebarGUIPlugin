@@ -96,12 +96,20 @@ class SidebarGUIProxy(QObject):
         # Check if rectangle is not outside the currently available screens
         application = Application.getInstance()
         screen_found = False
-        for screen_number in range(0, application.desktop().screenCount()):
-            if rectangle.intersects(
-                QRectF(application.desktop().availableGeometry(screen_number))
-            ):
-                screen_found = True
-                break
+        try:
+            # Qt6, Cura 5.0 and later
+            for screen in application.screens():
+                if rectangle.intersects(QRectF(screen.availableGeometry())):
+                    screen_found = True
+                    break
+        except AttributeError:
+            # Qt5, Cura 4.13 and before
+            for screen_number in range(0, application.desktop().screenCount()):
+                if rectangle.intersects(
+                    QRectF(application.desktop().availableGeometry(screen_number))
+                ):
+                    screen_found = True
+                    break
         if not screen_found:
             return False
         return True

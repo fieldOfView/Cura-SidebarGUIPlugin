@@ -3,8 +3,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
-
-import QtGraphicalEffects 1.0 // for the linear gradient
+import QtQuick.Shapes 1.2
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -132,21 +131,22 @@ Cura.ExpandableComponent
 
             Rectangle
             {
+                id: outsideBuildVolumeSwatch
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
 
                 width: UM.Theme.getSize("layerview_legend_size").width
                 height: UM.Theme.getSize("layerview_legend_size").height
+                clip: true
 
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
 
-                LinearGradient
+                Rectangle
                 {
                     anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_lining").width
-                    start: Qt.point(0, 0)
-                    end: Qt.point(width, height)
+                    scale: Math.sqrt(2)
+                    rotation: 45
                     gradient: Gradient
                     {
                         GradientStop { position: 0.5; color: UM.Theme.getColor("model_unslicable") }
@@ -176,17 +176,10 @@ Cura.ExpandableComponent
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
 
-                LinearGradient
+                gradient: LinearGradient
                 {
-                    anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_lining").width
-                    start: Qt.point(0, 0)
-                    end: Qt.point(width, 0)
-                    gradient: Gradient
-                    {
-                        GradientStop { position: 0.0; color: UM.Theme.getColor("xray") }
-                        GradientStop { position: 1.0; color: "white" }
-                    }
+                    GradientStop { position: 0.0; color: UM.Theme.getColor("xray") }
+                    GradientStop { position: 1.0; color: "white" }
                 }
             }
         }
@@ -208,7 +201,7 @@ Cura.ExpandableComponent
                 width: UM.Theme.getSize("layerview_legend_size").width
                 height: UM.Theme.getSize("layerview_legend_size").height
 
-                color: UM.Theme.getColor("xray_error")
+                color: UM.Theme.getColor("error_area")
 
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
