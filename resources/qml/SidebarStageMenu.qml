@@ -226,7 +226,8 @@ Item
         anchors.left: printSetupSidebar.left
         y: - Math.floor((UM.Theme.getSize("main_window_header").height + height) / 2)
 
-        Component.onCompleted: {
+        Component.onCompleted:
+        {
             if(isLE410)
             {
                 machineSelection.children[1].visible = false // remove shadow

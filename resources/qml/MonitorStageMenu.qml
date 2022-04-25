@@ -18,13 +18,15 @@ Item
     property bool isLE44
     property bool isLE46
     property bool isLE410
+    property bool isLE413
 
     Component.onCompleted:
     {
         is40 = (CuraSDKVersion == "6.0.0")
         isLE44 = (CuraSDKVersion <= "7.0.0")
         isLE46 = (CuraSDKVersion <= "7.2.0")
-        isLE410 = (CuraSDKVersion <= "7.6.0") && UM.Application.version != "master"
+        isLE410 = (CuraSDKVersion <= "7.6.0")
+        isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master"
 
         // adjust message stack position for sidebar
         var messageStack
@@ -36,24 +38,32 @@ Item
         {
             messageStack = base.contentItem.children[2].children[3].children[7]
         }
-        else
+        else if(isLE413)
         {
             messageStack = base.contentItem.children[2].children[3].children[8]
         }
+        else
+        {
+            messageStack = base.contentItem.children[3].children[3].children[8]
+        }
+        messageStack.anchors.horizontalCenter = undefined
+        messageStack.anchors.left = messageStack.parent.left
         messageStack.anchors.leftMargin = Qt.binding(function()
         {
-            return Math.floor((base.width) / 2)
+            return Math.floor((base.width - printSetupSelector.width) / 2)
         })
 
         // adjust stages menu position for sidebar
         var stagesListContainer = mainWindowHeader.children[1]
+        stagesListContainer.anchors.horizontalCenter = undefined
+        stagesListContainer.anchors.left = stagesListContainer.parent.left
         stagesListContainer.anchors.leftMargin = Qt.binding(function()
         {
             return Math.floor((base.width - printSetupSelector.width - stagesListContainer.width) / 2)
         })
 
         // hide application logo if there is no room for it
-        var applicationLogo = mainWindowHeader.children[0] // declared as property above
+        var applicationLogo = mainWindowHeader.children[0]
         applicationLogo.visible = Qt.binding(function()
         {
             return stagesListContainer.anchors.leftMargin > applicationLogo.width + 2 * UM.Theme.getSize("default_margin").width
@@ -65,7 +75,15 @@ Item
         id: machineSelection
         headerCornerSide: Cura.RoundedRectangle.Direction.All
         width: UM.Theme.getSize("machine_selector_widget").width
-        height: UM.Theme.getSize("main_window_header_button").height
+        height:
+        {
+            if (isLE413)
+            {
+                return UM.Theme.getSize("main_window_header_button").height
+            } else {
+                return Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+            }
+        }
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("print_setup_widget").width - width
         y: - Math.floor((UM.Theme.getSize("main_window_header").height + height) / 2)
