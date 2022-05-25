@@ -12,23 +12,8 @@ TabRow
     id: tabBar
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
-    property bool hasMaterials:
-    {
-        if (CuraSDKVersion >= "6.2.0") {
-            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasMaterials : false
-        } else {
-            return Cura.MachineManager.hasMaterials
-        }
-    }
-    property bool hasVariants:
-    {
-        if (CuraSDKVersion >= "6.2.0") {
-            return (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasVariants : false
-        } else {
-            return Cura.MachineManager.hasVariants
-        }
-    }
-
+    property bool hasMaterials: (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasMaterials : false
+    property bool hasVariants: (Cura.MachineManager.activeMachine != null) ? Cura.MachineManager.activeMachine.hasVariants : false
     visible: hasMaterials || hasVariants
     width: parent.width
     height: UM.Theme.getSize("extruder_icon").height + UM.Theme.getSize("narrow_margin").height

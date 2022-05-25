@@ -66,12 +66,9 @@ Rectangle
             {
                 Component.onCompleted:
                 {
-                    if(!isLE410)
+                    for(var child_nr in children)
                     {
-                        for(var child_nr in children)
-                        {
-                            children[child_nr].iconMargin = 3 * UM.Theme.getSize("default_lining").width
-                        }
+                        children[child_nr].iconMargin = 3 * UM.Theme.getSize("default_lining").width
                     }
                 }
             }
@@ -144,14 +141,7 @@ Rectangle
                 {
                     return UM.Controller.activeView.stageMenuComponent;
                 }
-                if (isLE413)
-                {
-                    return "PrepareStageLegend40.qml";
-                }
-                else
-                {
-                    return "PrepareStageLegend50.qml";
-                }
+                return "PrepareStageLegend50.qml";
             }
 
             onLoaded:

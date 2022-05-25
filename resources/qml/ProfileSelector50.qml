@@ -135,14 +135,7 @@ Item
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-            iconSource:
-            {
-                if(isLE410)
-                {
-                    UM.Theme.getIcon("star")
-                }
-                return UM.Theme.getIcon("StarFilled")
-            }
+            iconSource: UM.Theme.getIcon("StarFilled")
 
             onClicked:
             {
