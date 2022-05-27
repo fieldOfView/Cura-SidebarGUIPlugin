@@ -188,13 +188,13 @@ Item
         id: dockButton
         anchors
         {
-            verticalCenter: collapseButton.verticalCenter
+            verticalCenter: modeToggleSwitch.verticalCenter
 
             right: collapseButton.left
             rightMargin: UM.Theme.getSize("thin_margin").width
         }
         iconSource: Qt.resolvedUrl(settingsDocked ? "../icons/settings_undock.svg" : "../icons/settings_dock.svg")
-        width: UM.Theme.getSize("default_arrow").width + UM.Theme.getSize("default_lining").width
+        width: UM.Theme.getSize("default_arrow").width + 2 * UM.Theme.getSize("default_lining").width
         height: width
         color: UM.Theme.getColor("small_button_text")
 
@@ -210,14 +210,13 @@ Item
         id: collapseButton
         anchors
         {
-            top: parent.top
-            topMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: modeToggleSwitch.verticalCenter
 
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         iconSource: UM.Theme.getIcon("Cancel")
-        width: UM.Theme.getSize("default_arrow").width + UM.Theme.getSize("default_lining").width
+        width: UM.Theme.getSize("default_arrow").width + 2 * UM.Theme.getSize("default_lining").width
         height: width
         color: UM.Theme.getColor("small_button_text")
 
