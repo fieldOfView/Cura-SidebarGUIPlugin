@@ -320,7 +320,7 @@ Cura.MenuItem
 
                                     color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
 
-                                    property int contentWidth: checkmark.width + colorLabel.width + UM.Theme.getSize("default_margin").width
+                                    property int contentWidth: checkmark.width + swatch.width + colorLabel.width + 2 * UM.Theme.getSize("default_margin").width
 
                                     Item
                                     {
@@ -341,12 +341,24 @@ Cura.MenuItem
                                             color: UM.Theme.getColor("setting_control_text")
                                         }
 
+                                        Rectangle
+                                        {
+                                            id: swatch
+                                            color: model.color_code
+                                            width: UM.Theme.getSize("icon_indicator").width
+                                            height: UM.Theme.getSize("icon_indicator").height
+                                            radius: width / 2
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width + UM.Theme.getSize("default_arrow").height
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+
                                         UM.Label
                                         {
                                             id: colorLabel
                                             text: model.name
-                                            anchors.left: parent.left
-                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_arrow").height
+                                            anchors.left: swatch.right
+                                            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
                                             anchors.verticalCenter: parent.verticalCenter
 
                                             elide: Label.ElideRight
