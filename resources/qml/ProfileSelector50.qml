@@ -153,7 +153,7 @@ Item
         {
             id: downArrow
 
-            source: UM.Theme.getIcon("arrow_bottom")
+            source: UM.Theme.getIcon("ChevronSingleDown")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
 

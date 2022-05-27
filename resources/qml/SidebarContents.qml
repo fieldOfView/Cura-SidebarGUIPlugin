@@ -33,11 +33,11 @@ Cura.RoundedRectangle
             height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
             source:
             {
-                var isGT44 = (CuraSDKVersion >= "7.0.0");
-                var isGT50 = (CuraSDKVersion >= "8.0.0") || UM.Application.version == "master";
-                if(isGT50) {
+                var isGE44 = (CuraSDKVersion >= "7.0.0");
+                var isGE50 = (CuraSDKVersion >= "8.0.0") || UM.Application.version == "master";
+                if(isGE50) {
                     return "ProfileSelector50.qml";
-                } else if(isGT44) {
+                } else if(isGE44) {
                     return "ProfileSelector44.qml";
                 } else {
                     return "ProfileSelector40.qml";
@@ -104,7 +104,13 @@ Cura.RoundedRectangle
                     rightMargin: UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("narrow_margin").width
                     verticalCenter: parent.verticalCenter
                 }
-                iconSource: extruderConfiguration.visible ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                iconSource:
+                {
+                    if (isLE410) {
+                        return extruderConfiguration.visible ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                    }
+                    return extruderConfiguration.visible ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
+                }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 color: UM.Theme.getColor("setting_category_text")
@@ -140,6 +146,9 @@ Cura.RoundedRectangle
                 id: configurationMenu
                 visible: false
 
+                property var selectors
+                property var enabledCheckbox
+
                 Component.onCompleted:
                 {
                     configurationMenu.contentItem.children[1].visible = false // separator
@@ -158,8 +167,29 @@ Cura.RoundedRectangle
                     customConfiguration.children[2].anchors.topMargin = 0
                     customConfiguration.children[3].children[0].visible = false // some spacer rectangle
                     customConfiguration.children[3].children[0].height = 0
-                    customConfiguration.children[3].children[1].padding = 0 // enabled/material/variant column
-                    customConfiguration.children[3].children[1].spacing = UM.Theme.getSize("default_lining").height
+
+                    selectors = customConfiguration.children[3].children[1]
+                    selectors.padding = 0 // enabled/material/variant column
+                    selectors.spacing = UM.Theme.getSize("default_lining").height
+
+                    enabledCheckbox = selectors.children[0].children[1]
+
+                    if (isLE413)
+                    {
+                        return
+                    }
+
+                    materialSelectionLoader.source = "MaterialSelection.qml"
+                }
+
+                Loader
+                {
+                    id: materialSelectionLoader
+                    property var configurationMenu: parent
+                    onLoaded:
+                    {
+                        configurationMenu.selectors.children[1].children[1] = item
+                    }
                 }
             }
         }
