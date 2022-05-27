@@ -317,5 +317,11 @@ Item
     SidebarToolWindow
     {
         id: sidebarToolWindow
+        onClosing:
+        {
+            // tool window is closed by window manager (not via our collapse button)
+            UM.Preferences.setValue("view/settings_visible", false)
+            stageMenu.settingsVisible = false
+        }
     }
 }
