@@ -178,18 +178,11 @@ Item
         }
         onTextChanged: function()
         {
-            /* The div automatically adapts to 100% of the parent width and
-            wraps properly, so this causes the tooltips to be wrapped to the width
-            of the tooltip as set by the operating system. */
-
-            sidebarToolWindow.tooltipText =  "<div>" + tooltip.text + "</div>"
+            sidebarToolWindow.toolTipText =  tooltip.text
         }
-        onYChanged: function()
+        onTargetChanged: function()
         {
-            sidebarToolWindow.tooltipPosition = Qt.point(
-                UM.Theme.getSize("default_margin").width,
-                tooltip.y + 3 * UM.Theme.getSize("default_margin").height
-            )
+            sidebarToolWindow.toolTipY = tooltip.target.y
         }
     }
 
@@ -322,6 +315,8 @@ Item
             // tool window is closed by window manager (not via our collapse button)
             UM.Preferences.setValue("view/settings_visible", false)
             stageMenu.settingsVisible = false
+
+            printSetupTooltip.visible = true
         }
     }
 }
