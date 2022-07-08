@@ -34,8 +34,11 @@ Cura.RoundedRectangle
             source:
             {
                 var isGE44 = (CuraSDKVersion >= "7.0.0");
-                var isGE50 = (CuraSDKVersion >= "8.0.0") || UM.Application.version == "master";
-                if(isGE50) {
+                var isGE50 = (CuraSDKVersion >= "8.0.0");
+                var isGE51 = (CuraSDKVersion >= "8.1.0") || UM.Application.version == "master" || UM.Application.version == "dev";
+                if (isGE51) {
+                    return "ProfileSelector51.qml";
+                } else if(isGE50) {
                     return "ProfileSelector50.qml";
                 } else if(isGE44) {
                     return "ProfileSelector44.qml";
@@ -84,7 +87,7 @@ Cura.RoundedRectangle
                 source:
                 {
                     var isLE410 = (CuraSDKVersion <= "7.6.0")
-                    var isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master"
+                    var isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master" && UM.Application.version != "dev"
                     if(isLE410) {
                         return "ExtruderTabs40.qml";
                     } else if (isLE413) {

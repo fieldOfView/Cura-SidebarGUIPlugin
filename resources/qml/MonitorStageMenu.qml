@@ -26,7 +26,7 @@ Item
         isLE44 = (CuraSDKVersion <= "7.0.0")
         isLE46 = (CuraSDKVersion <= "7.2.0")
         isLE410 = (CuraSDKVersion <= "7.6.0")
-        isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master"
+        isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master" && UM.Application.version != "dev"
 
         // adjust message stack position for sidebar
         var messageStack

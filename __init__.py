@@ -27,7 +27,7 @@ def register(app):
 
 def __matchVersion():
     cura_version = Application.getInstance().getVersion()
-    if cura_version == "master":
+    if cura_version == "master" or cura_version == "dev":
         Logger.log("d", "Running Cura from source; skipping version check")
         return True
     if cura_version.startswith("Arachne_engine"):
