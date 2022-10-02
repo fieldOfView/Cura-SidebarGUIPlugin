@@ -3,7 +3,7 @@
     "author": "fieldOfView",
     "version": "4.4.1-DEV",
     "minimum_cura_version": "4.0",
-    "maximum_cura_version": "5.1",
+    "maximum_cura_version": "5.2",
     "description": "Provides an alternative, setting-centric interface based around a fixed sidebar",
     "api": "6.0.0",
     "supported_sdk_versions": [
