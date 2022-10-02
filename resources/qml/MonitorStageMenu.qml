@@ -19,6 +19,7 @@ Item
     property bool isLE46
     property bool isLE410
     property bool isLE413
+    property bool isLE51
 
     Component.onCompleted:
     {
@@ -26,7 +27,8 @@ Item
         isLE44 = (CuraSDKVersion <= "7.0.0")
         isLE46 = (CuraSDKVersion <= "7.2.0")
         isLE410 = (CuraSDKVersion <= "7.6.0")
-        isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master" && UM.Application.version != "dev"
+        isLE413 = (CuraSDKVersion <= "7.9.0")
+        isLE51 = (CuraSDKVersion <= "8.1.0") && UM.Application.version != "master" && UM.Application.version != "dev"
 
         // adjust message stack position for sidebar
         var messageStack

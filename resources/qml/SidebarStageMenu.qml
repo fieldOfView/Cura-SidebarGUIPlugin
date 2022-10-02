@@ -16,6 +16,7 @@ Item
     property bool isLE46
     property bool isLE410
     property bool isLE413
+    property bool isLE51
 
     property bool prepareStageActive: UM.Controller.activeStage.toString().indexOf("PrepareStage") == 0
     property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
@@ -32,7 +33,8 @@ Item
         isLE44 = (CuraSDKVersion <= "7.0.0")
         isLE46 = (CuraSDKVersion <= "7.2.0")
         isLE410 = (CuraSDKVersion <= "7.6.0")
-        isLE413 = (CuraSDKVersion <= "7.9.0") && UM.Application.version != "master" && UM.Application.version != "dev"
+        isLE413 = (CuraSDKVersion <= "7.9.0")
+        isLE51 = (CuraSDKVersion <= "8.1.0") && UM.Application.version != "master" && UM.Application.version != "dev"
         if(is40)
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
@@ -53,9 +55,13 @@ Item
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.10 - 4.13")
         }
+        else if(isLE51)
+        {
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 5.0 - 5.1")
+        }
         else
         {
-             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 5.0 and newer")
+             CuraApplication.log("SidebarGUIPlugin patching interface for Cura 5.2 and newer")
         }
 
         // top-align toolbar (defined in Cura.qml)

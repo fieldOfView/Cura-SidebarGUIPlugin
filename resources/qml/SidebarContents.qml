@@ -165,13 +165,21 @@ Cura.RoundedRectangle
                     var customConfiguration = configurationMenu.contentItem.children[0].children[1];
                     customConfiguration.children[0].visible = false // "Custom" label
                     customConfiguration.children[0].height = 0
-                    customConfiguration.children[2].visible = false // extruder tabs
-                    customConfiguration.children[2].height = 0
-                    customConfiguration.children[2].anchors.topMargin = 0
-                    customConfiguration.children[3].children[0].visible = false // some spacer rectangle
-                    customConfiguration.children[3].children[0].height = 0
 
-                    selectors = customConfiguration.children[3].children[1]
+                    var extruderTabs = customConfiguration.children[1]
+                    if (isLE51)
+                        extruderTabs = customConfiguration.children[2]
+                    extruderTabs.visible = false // extruder tabs
+                    extruderTabs.height = 0
+                    extruderTabs.anchors.topMargin = 0
+
+                    var customSelectors = customConfiguration.children[2]
+                    if (isLE51)
+                        customSelectors = customConfiguration.children[3]
+                    customSelectors.children[0].visible = false // some spacer rectangle
+                    customSelectors.children[0].height = 0
+
+                    selectors = customSelectors.children[1]
                     selectors.padding = 0 // enabled/material/variant column
                     selectors.spacing = UM.Theme.getSize("default_lining").height
 
