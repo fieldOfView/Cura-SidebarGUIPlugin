@@ -6,8 +6,12 @@ from UM.Logger import Logger
 from UM.FlameProfiler import pyqtSlot
 
 try:
+    from cura.ApplicationMetadata import CuraSDKVersion
+except ImportError: # Cura <= 3.6
+    CuraSDKVersion = "6.0.0"
+if CuraSDKVersion >= "8.0.0":
     from PyQt6.QtCore import QObject, QRectF
-except ImportError:
+else:
     from PyQt5.QtCore import QObject, QRectF
 
 try:
