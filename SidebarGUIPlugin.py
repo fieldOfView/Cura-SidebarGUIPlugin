@@ -24,6 +24,7 @@ from .SidebarGUIProxy import SidebarGUIProxy
 class SidebarGUIPlugin(Extension):
     def __init__(self):
         super().__init__()
+
         self._prepare_stage_view_id = "SolidView"  # can be "SolidView" or "XRayView"
 
         Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
