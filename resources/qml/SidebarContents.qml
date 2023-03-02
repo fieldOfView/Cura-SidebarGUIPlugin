@@ -35,8 +35,11 @@ Cura.RoundedRectangle
             {
                 var isGE44 = (CuraSDKVersion >= "7.0.0");
                 var isGE50 = (CuraSDKVersion >= "8.0.0");
-                var isGE51 = (CuraSDKVersion >= "8.1.0") || UM.Application.version == "master" || UM.Application.version == "dev";
-                if (isGE51) {
+                var isGE51 = (CuraSDKVersion >= "8.1.0");
+                var isGE53 = (CuraSDKVersion >= "8.3.0") || UM.Application.version == "master" || UM.Application.version == "dev";
+                if (isGE53) {
+                    return "ProfileSelector53.qml";
+                }else if (isGE51) {
                     return "ProfileSelector51.qml";
                 } else if(isGE50) {
                     return "ProfileSelector50.qml";
