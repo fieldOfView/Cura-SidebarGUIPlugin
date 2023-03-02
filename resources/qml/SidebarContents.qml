@@ -107,7 +107,7 @@ Cura.RoundedRectangle
                 anchors
                 {
                     right: parent.right
-                    rightMargin: UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("narrow_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     verticalCenter: parent.verticalCenter
                 }
                 iconSource:
@@ -158,6 +158,11 @@ Cura.RoundedRectangle
                 Component.onCompleted:
                 {
                     configurationMenu.contentItem.children[1].visible = false // separator
+                    if(!isGE50)
+                    {
+                        configurationMenu.contentItem.children[0].x = 2 * UM.Theme.getSize("default_margin").width // extruder config
+                        configurationMenu.contentItem.children[2].x = UM.Theme.getSize("default_margin").width // Custom/Configurations
+                    }
 
                     var autoConfiguration = configurationMenu.contentItem.children[0].children[0];
                     autoConfiguration.children[0].visible = false // "Configurations" label

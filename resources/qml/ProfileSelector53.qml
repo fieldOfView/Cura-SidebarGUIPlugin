@@ -180,7 +180,7 @@ Item
             verticalCenter: modeToggleSwitch.verticalCenter
 
             right: collapseButton.left
-            rightMargin: UM.Theme.getSize("thin_margin").width
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
         iconSource: Qt.resolvedUrl(settingsDocked ? "../icons/settings_undock.svg" : "../icons/settings_dock.svg")
         width: UM.Theme.getSize("default_arrow").width + 2 * UM.Theme.getSize("default_lining").width
