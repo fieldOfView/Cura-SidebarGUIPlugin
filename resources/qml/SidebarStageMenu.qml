@@ -12,10 +12,12 @@ Item
     id: stageMenu
 
     property bool is40
+    property bool isLE43
     property bool isLE44
     property bool isLE46
     property bool isLE410
     property bool isLE413
+    property bool isLE50
     property bool isLE51
     property bool isLE52
 
@@ -31,10 +33,12 @@ Item
     Component.onCompleted:
     {
         is40 = (CuraSDKVersion == "6.0.0")
+        isLE43 = (CuraSDKVersion <= "6.3.0")
         isLE44 = (CuraSDKVersion <= "7.0.0")
         isLE46 = (CuraSDKVersion <= "7.2.0")
         isLE410 = (CuraSDKVersion <= "7.6.0")
         isLE413 = (CuraSDKVersion <= "7.9.0")
+        isLE50 = (CuraSDKVersion <= "8.0.0")
         isLE51 = (CuraSDKVersion <= "8.1.0")
         isLE52 = (CuraSDKVersion <= "8.2.0") && UM.Application.version != "master" && UM.Application.version != "dev"
         if(is40)
