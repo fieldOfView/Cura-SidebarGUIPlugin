@@ -47,14 +47,7 @@ Item
             Label
             {
                 id: textLabel
-                text:
-                {
-                    if(isLE52) {
-                        return Cura.MachineManager.activeQualityDisplayNameMap["main"]
-                    } else {
-                        return Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
-                    }
-                }
+                text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 Layout.margins: 0
@@ -80,40 +73,29 @@ Item
 
                 function activeQualityDetailText()
                 {
-                    if(isLE52) {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
+                    var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                    var resultSuffix = resultMap["suffix"]
+                    var result = ""
 
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
+                    if (Cura.MachineManager.isActiveQualityExperimental)
+                    {
+                        resultSuffix += " (Experimental)"
+                    }
 
-                        if (Cura.MachineManager.isActiveQualitySupported)
+                    if (Cura.MachineManager.isActiveQualitySupported)
+                    {
+                        if (Cura.MachineManager.activeQualityLayerHeight > 0)
                         {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
+                            if (resultSuffix)
                             {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                                result += " - " + resultSuffix
                             }
-                        }
-                        return result
-                    } else {
-                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
-                        if (string_parts.length === 0)
-                        {
-                            return "";
-                        }
-                        else
-                        {
-                            return ` - ${string_parts.join(" - ")}`
+                            result += " - "
+                            result += Cura.MachineManager.activeQualityLayerHeight + "mm"
                         }
                     }
+
+                    return result
                 }
             }
         }

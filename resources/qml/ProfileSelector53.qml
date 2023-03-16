@@ -49,11 +49,7 @@ Item
                 id: textLabel
                 text:
                 {
-                    if(isLE52) {
-                        return Cura.MachineManager.activeQualityDisplayNameMap["main"]
-                    } else {
-                        return Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
-                    }
+                    return Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                 }
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
@@ -80,39 +76,14 @@ Item
 
                 function activeQualityDetailText()
                 {
-                    if(isLE52) {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
-
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
-
-                        if (Cura.MachineManager.isActiveQualitySupported)
-                        {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                            {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                            }
-                        }
-                        return result
-                    } else {
-                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
-                        if (string_parts.length === 0)
-                        {
-                            return "";
-                        }
-                        else
-                        {
-                            return ` - ${string_parts.join(" - ")}`
-                        }
+                    const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                    if (string_parts.length === 0)
+                    {
+                        return "";
+                    }
+                    else
+                    {
+                        return ` - ${string_parts.join(" - ")}`
                     }
                 }
             }
