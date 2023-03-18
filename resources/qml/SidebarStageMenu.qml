@@ -171,7 +171,10 @@ Item
         customPrintSetup.children[1].visible = false // extruder tabs
         customPrintSetup.children[0].visible = false // profile selector
         customPrintSetup.children[0].height = 0
-        customPrintSetup.children[2].anchors.rightMargin = 0
+        customPrintSetup.children[2].anchors.rightMargin = -UM.Theme.getSize("narrow_margin").width
+
+        var settingView = customPrintSetup.children[2].children[0]
+        settingView.children[4].ScrollBar.vertical.rightPadding = UM.Theme.getSize("narrow_margin").width
 
         var recommendedPrintSetup = printSetupChildren.children[0]
         if(!isLE52)
