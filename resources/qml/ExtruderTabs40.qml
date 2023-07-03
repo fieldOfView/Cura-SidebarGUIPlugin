@@ -61,7 +61,7 @@ TabRow
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
-
+                    wrapMode: Text.NoWrap
                     visible: hasMaterials
 
                     anchors
@@ -79,13 +79,13 @@ TabRow
                 {
                     id: variantLabel
 
-                    visible: hasVariants
-
                     text: model.variant
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default_bold")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
+                    wrapMode: Text.NoWrap
+                    visible: hasVariants
 
                     anchors
                     {
