@@ -1,7 +1,7 @@
 {
     "name": "Sidebar GUI",
     "author": "fieldOfView",
-    "version": "4.6.2-DEV",
+    "version": "4.6.2",
     "minimum_cura_version": "4.0",
     "maximum_cura_version": "5.4",
     "description": "Provides an alternative, setting-centric interface based around a fixed sidebar",
