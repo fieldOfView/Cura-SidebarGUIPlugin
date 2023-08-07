@@ -106,7 +106,7 @@ TabRow
                             {
                                 return UM.StatusIcon.Status.ERROR
                             }
-                            if (!Cura.SidebarGUIPlugin.getExtruderHasQualityForMaterial(extruderStack))
+                            if (!SidebarGUIPlugin.getExtruderHasQualityForMaterial(extruderStack))
                             {
                                 return UM.StatusIcon.Status.WARNING
                             }

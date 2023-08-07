@@ -4,7 +4,6 @@
 import os.path
 from UM.Application import Application
 from UM.Extension import Extension
-from UM.Resources import Resources
 from UM.Logger import Logger
 
 try:
@@ -51,14 +50,7 @@ class SidebarGUIPlugin(Extension):
         Logger.log("d", "Registering replacement stages")
 
         engine = Application.getInstance()._qml_engine
-        try:
-            qmlRegisterSingletonType(
-                SidebarGUIProxy, "Cura", 1, 0, self.getProxy, "SidebarGUIPlugin"
-            )
-        except TypeError:
-            qmlRegisterSingletonType(
-                SidebarGUIProxy, "Cura", 1, 0, "SidebarGUIPlugin", self.getProxy
-            )
+        engine.rootContext().setContextProperty("SidebarGUIPlugin", self._proxy)
 
         sidebar_component_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -137,8 +129,3 @@ class SidebarGUIPlugin(Extension):
         else:
             if active_stage_id != "PrepareStage":
                 self._controller.setActiveStage("PrepareStage")
-
-    ##  Hackish way to ensure the proxy is already created, which ensures that the sidebargui.qml is already created
-    #   as this caused some issues.
-    def getProxy(self, engine, script_engine):
-        return self._proxy
