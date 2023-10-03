@@ -79,7 +79,8 @@ Window
     {
         if (visible)
         {
-            if(!Cura.SidebarGUIPlugin.checkRectangleOnScreen(Qt.rect(sidebarToolWindow.x, sidebarToolWindow.y, sidebarToolWindow.width, sidebarToolWindow.height)))
+            var sidebar_rect = Qt.rect(sidebarToolWindow.x, sidebarToolWindow.y, sidebarToolWindow.width, sidebarToolWindow.height)
+            if(!SidebarGUIPlugin.checkRectangleOnScreen(sidebar_rect))
             {
                 sidebarToolWindow.x = base.x + base.width - sidebarToolWindow.width + UM.Theme.getSize("wide_margin").width
                 sidebarToolWindow.y = base.y + UM.Theme.getSize("wide_margin").width
