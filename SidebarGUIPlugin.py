@@ -6,17 +6,6 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 
-try:
-    from cura.ApplicationMetadata import CuraSDKVersion
-except ImportError: # Cura <= 3.6
-    CuraSDKVersion = "6.0.0"
-if CuraSDKVersion >= "8.0.0":
-    from PyQt6.QtCore import QUrl
-    from PyQt6.QtQml import qmlRegisterSingletonType
-else:
-    from PyQt5.QtCore import QUrl
-    from PyQt5.QtQml import qmlRegisterSingletonType
-
 from .SidebarGUIProxy import SidebarGUIProxy
 
 
