@@ -3,7 +3,6 @@
 
 import os, json
 
-from . import SidebarGUIPlugin
 from UM.i18n import i18nCatalog
 
 i18n_catalog = i18nCatalog("cura")
@@ -11,6 +10,9 @@ i18n_catalog = i18nCatalog("cura")
 from UM.Version import Version
 from UM.Application import Application
 from UM.Logger import Logger
+
+from . import SidebarGUIPlugin
+from . import SidebarIncompatibleVersion
 
 
 def getMetaData():
@@ -22,7 +24,7 @@ def register(app):
         return {"extension": SidebarGUIPlugin.SidebarGUIPlugin()}
     else:
         Logger.log("w", "Plugin not loaded because of a version mismatch")
-        return {}
+        return {"extension": SidebarIncompatibleVersion.SidebarIncompatibleVersion()}
 
 
 def __matchVersion():
@@ -46,7 +48,7 @@ def __matchVersion():
             plugin_info = json.load(plugin_file)
             minimum_cura_version = Version(plugin_info["minimum_cura_version"])
             maximum_cura_version = Version(plugin_info["maximum_cura_version"])
-    except:
+    except Exception:
         Logger.log("w", "Could not get version information for the plugin")
         return False
 
