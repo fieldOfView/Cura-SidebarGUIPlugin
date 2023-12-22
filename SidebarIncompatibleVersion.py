@@ -4,8 +4,16 @@
 import os.path
 import json
 
-from PyQt6.QtCore import QUrl
-from PyQt6.QtGui import QDesktopServices
+try:
+    from cura.ApplicationMetadata import CuraSDKVersion
+except ImportError: # Cura <= 3.6
+    CuraSDKVersion = "6.0.0"
+if CuraSDKVersion >= "8.0.0":
+    from PyQt6.QtCore import QUrl
+    from PyQt6.QtGui import QDesktopServices
+else:
+    from PyQt5.QtCore import QUrl
+    from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from UM.Extension import Extension
@@ -14,7 +22,7 @@ from UM.Version import Version
 
 from UM.i18n import i18nCatalog
 
-i18n_catalog = i18nCatalog("octoprint")
+i18n_catalog = i18nCatalog("cura")
 
 
 class SidebarIncompatibleVersion(Extension):
