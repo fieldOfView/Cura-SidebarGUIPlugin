@@ -190,11 +190,14 @@ Item
             settingView.children[4].ScrollBar.vertical.rightPadding = UM.Theme.getSize("narrow_margin").width
         }
 
-        var recommendedPrintSetup = printSetupChildren.children[0]
-        if(!isLE52)
+        if(isLE59)
         {
-            recommendedPrintSetup.height = undefined
-            recommendedPrintSetup.children[0].contentItem.children[0].children[9].children[0].visible = false
+            var recommendedPrintSetup = printSetupChildren.children[0]
+            if(!isLE52)
+            {
+                recommendedPrintSetup.height = undefined
+                recommendedPrintSetup.children[0].contentItem.children[0].children[9].children[0].visible = false
+            }
         }
 
         // tweak header height
@@ -222,7 +225,7 @@ Item
         }
         onTextChanged: function()
         {
-            sidebarToolWindow.toolTipText =  tooltip.text
+            sidebarToolWindow.toolTipText = tooltip.text
         }
         onTargetChanged: function()
         {
