@@ -93,8 +93,14 @@ class SidebarGUIPlugin(Extension):
             self._controller.setActiveView(view_id)
 
     def _onViewChanged(self):
-        active_stage_id = self._controller.getActiveStage().getPluginId()
-        active_view_id = self._controller.getActiveView().getPluginId()
+        active_stage = self._controller.getActiveStage()
+        active_view = self._controller.getActiveView()
+
+        if not active_stage or not active_view:
+            return
+
+        active_stage_id = active_stage.getPluginId()
+        active_view_id = active_view.getPluginId()
 
         if (
             active_stage_id == "SmartSlicePlugin"
@@ -107,6 +113,11 @@ class SidebarGUIPlugin(Extension):
                 return
             self._prepare_stage_view_id = active_view_id
         elif active_stage_id == "MonitorStage":
+            return
+        elif active_stage_id == "PreviewStage":
+            # Ensure SimulationView is active when in PreviewStage
+            if active_view_id != "SimulationView":
+                self._controller.setActiveView("SimulationView")
             return
 
         if active_view_id in [
