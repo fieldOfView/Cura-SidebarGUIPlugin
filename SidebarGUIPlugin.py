@@ -5,6 +5,7 @@ import os.path
 from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
+from PyQt6.QtCore import QTimer
 
 from .SidebarGUIProxy import SidebarGUIProxy
 
@@ -79,6 +80,12 @@ class SidebarGUIPlugin(Extension):
 
     def _onStageChanged(self):
         active_stage_id = self._controller.getActiveStage().getPluginId()
+        active_view = self._controller.getActiveView()
+
+        # Don't change view if PaintTool is active
+        if active_view and active_view.getPluginId() == "PaintTool":
+            return
+
         view_id = ""
 
         if active_stage_id == "PrepareStage":
@@ -93,8 +100,18 @@ class SidebarGUIPlugin(Extension):
             self._controller.setActiveView(view_id)
 
     def _onViewChanged(self):
-        active_stage_id = self._controller.getActiveStage().getPluginId()
-        active_view_id = self._controller.getActiveView().getPluginId()
+        active_stage = self._controller.getActiveStage()
+        active_view = self._controller.getActiveView()
+
+        if not active_stage or not active_view:
+            return
+
+        active_stage_id = active_stage.getPluginId()
+        active_view_id = active_view.getPluginId()
+
+        # Force machine settings update when PaintTool is activated to fix rendering issue
+        if active_view_id == "PaintTool":
+            QTimer.singleShot(0, lambda: Application.getInstance().getMachineManager().forceUpdateAllSettings())
 
         if (
             active_stage_id == "SmartSlicePlugin"
@@ -102,11 +119,17 @@ class SidebarGUIPlugin(Extension):
             return
 
         if active_stage_id == "PrepareStage":
-            if active_view_id not in ["SolidView", "XRayView"]:
+            if active_view_id not in ["SolidView", "XRayView", "PaintTool"]:
                 self._controller.setActiveView("SolidView")
                 return
-            self._prepare_stage_view_id = active_view_id
+            if active_view_id in ["SolidView", "XRayView"]:
+                self._prepare_stage_view_id = active_view_id
         elif active_stage_id == "MonitorStage":
+            return
+        elif active_stage_id == "PreviewStage":
+            # Ensure SimulationView is active when in PreviewStage
+            if active_view_id != "SimulationView":
+                self._controller.setActiveView("SimulationView")
             return
 
         if active_view_id in [
@@ -115,6 +138,6 @@ class SidebarGUIPlugin(Extension):
         ]:  # FastView is provided by the RAWMouse plugin
             if active_stage_id != "PreviewStage":
                 self._controller.setActiveStage("PreviewStage")
-        else:
+        elif active_view_id not in ["PaintTool"]:
             if active_stage_id != "PrepareStage":
                 self._controller.setActiveStage("PrepareStage")
