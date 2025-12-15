@@ -2,10 +2,9 @@
 # The SidebarGUIPlugin is released under the terms of the AGPLv3 or higher.
 
 import os.path
-from UM.Application import Application
+from cura.CuraApplication import CuraApplication
 from UM.Extension import Extension
 from UM.Logger import Logger
-from PyQt6.QtCore import QTimer
 
 from .SidebarGUIProxy import SidebarGUIProxy
 
@@ -16,8 +15,8 @@ class SidebarGUIPlugin(Extension):
 
         self._prepare_stage_view_id = "SolidView"  # can be "SolidView" or "XRayView"
 
-        Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
-        preferences = Application.getInstance().getPreferences()
+        CuraApplication.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
+        preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference("sidebargui/expand_extruder_configuration", False)
         preferences.addPreference("sidebargui/expand_legend", True)
         preferences.addPreference("sidebargui/docked_sidebar", True)
@@ -25,7 +24,7 @@ class SidebarGUIPlugin(Extension):
         preferences.addPreference("sidebargui/settings_window_top", 65535)
         preferences.addPreference("sidebargui/settings_window_height", 0)
 
-        self._controller = Application.getInstance().getController()
+        self._controller = CuraApplication.getInstance().getController()
         self._controller.activeStageChanged.connect(self._onStageChanged)
         self._controller.activeViewChanged.connect(self._onViewChanged)
 
@@ -34,12 +33,12 @@ class SidebarGUIPlugin(Extension):
     def _onPluginsLoaded(self):
         # delayed connection to engineCreatedSignal to force this plugin to receive that signal
         # AFTER the original stages are created
-        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+        CuraApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onEngineCreated(self):
         Logger.log("d", "Registering replacement stages")
 
-        engine = Application.getInstance()._qml_engine
+        engine = CuraApplication.getInstance()._qml_engine
         engine.rootContext().setContextProperty("SidebarGUIPlugin", self._proxy)
 
         sidebar_component_path = os.path.join(
@@ -111,7 +110,9 @@ class SidebarGUIPlugin(Extension):
 
         # Force machine settings update when PaintTool is activated to fix rendering issue
         if active_view_id == "PaintTool":
-            QTimer.singleShot(0, lambda: Application.getInstance().getMachineManager().forceUpdateAllSettings())
+            CuraApplication.getInstance().callLater(
+                CuraApplication.getInstance().getMachineManager().forceUpdateAllSettings()
+            )
 
         if (
             active_stage_id == "SmartSlicePlugin"
