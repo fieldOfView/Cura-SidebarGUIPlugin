@@ -62,7 +62,7 @@ Cura.ExpandableComponent
             return viewString.substr(0, viewString.indexOf("("));
         }
 
-        CheckBox
+        UM.CheckBox
         {
             id: xrayViewCheckBox
             checked: parent.activeView == "XRayView"
@@ -71,16 +71,16 @@ Cura.ExpandableComponent
             {
                 if(checked && parent.activeView != "XRayView")
                 {
-                    UM.Controller.setActiveView("XRayView")
+                    SidebarGUIPlugin.setActiveView("XRayView")
                 }
                 else if(! checked && parent.activeView != "SolidView")
                 {
-                    UM.Controller.setActiveView("SolidView")
+                    SidebarGUIPlugin.setActiveView("SolidView")
                 }
             }
             text: catalog.i18nc("@label", "X-Ray view")
-            style: UM.Theme.styles.checkbox
             width: parent.width
+        }
         }
 
         Label
