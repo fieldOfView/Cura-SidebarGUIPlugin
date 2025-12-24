@@ -70,11 +70,11 @@ Cura.ExpandableComponent
             {
                 if(checked && parent.activeView != "XRayView")
                 {
-                    UM.Controller.setActiveView("XRayView")
+                    SidebarGUIPlugin.setActiveView("XRayView")
                 }
                 else if(! checked && parent.activeView != "SolidView")
                 {
-                    UM.Controller.setActiveView("SolidView")
+                    SidebarGUIPlugin.setActiveView("SolidView")
                 }
             }
             text: catalog.i18nc("@label", "X-Ray view")
