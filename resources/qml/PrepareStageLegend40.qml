@@ -81,7 +81,6 @@ Cura.ExpandableComponent
             text: catalog.i18nc("@label", "X-Ray view")
             width: parent.width
         }
-        }
 
         Label
         {

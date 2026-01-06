@@ -100,7 +100,7 @@ class SidebarGUIProxy(QObject):
         """Set the active view from QML."""
         controller = Application.getInstance().getController()
         if controller:
-            Logger.log("d", f"SidebarGUI: Setting active view to {view_id}")
+            Logger.log("d", "Setting active view to %s", view_id)
             controller.setActiveView(view_id)
 
     @pyqtSlot("QVariant", result=bool)
