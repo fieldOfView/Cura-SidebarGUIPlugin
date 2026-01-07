@@ -66,26 +66,44 @@ Cura.ExpandableComponent
             id: xrayViewCheckBox
             checked: parent.activeView == "XRayView"
             visible: !externalViewLabel.visible
+						
             onClicked:
             {
-                if(checked && parent.activeView != "XRayView")
+								var prepareMode = String(UM.Controller.activeView ?? "").substr(0, String(UM.Controller.activeView ?? "").indexOf("("))
+							
+                if (checked && parent.activeView != "XRayView")
                 {
+										if (prepareMode === "PaintView")
+										{							
+												UM.Preferences.setValue("sidebargui/paint_tool_active", true)
+										}
+										else
+										{							
+												UM.Preferences.setValue("sidebargui/paint_tool_active", false)
+										}
+											
                     SidebarGUIPlugin.setActiveView("XRayView")
                 }
-                else if(! checked && parent.activeView != "SolidView")
+                else if (! checked && parent.activeView != "SolidView")
                 {
                     SidebarGUIPlugin.setActiveView("SolidView")
+
+										if (UM.Preferences.getValue("sidebargui/paint_tool_active"))
+										{
+												SidebarGUIPlugin.setActiveView("PaintTool")
+										}
                 }
             }
-            text: catalog.i18nc("@label", "X-Ray view")
+            text: catalog.i18nc("@label", "X-Ray View")
             width: parent.width
         }
 
         UM.Label
         {
             id: externalViewLabel
-
-            height: UM.Theme.getSize("layerview_row").height
+						
+						horizontalAlignment: Text.AlignHCenter
+						height: UM.Theme.getSize("layerview_row").height
             width: parent.width
             color: UM.Theme.getColor("setting_control_text")
         }
@@ -104,7 +122,7 @@ Cura.ExpandableComponent
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
             color: UM.Theme.getColor("setting_control_text")
-
+						
             Rectangle
             {
                 anchors.verticalCenter: parent.verticalCenter
@@ -122,13 +140,13 @@ Cura.ExpandableComponent
 
         UM.Label
         {
-            text: catalog.i18nc("@label", "Outside buildvolume")
+            text: catalog.i18nc("@label", "Outside Build Volume")
             visible: parent.activeView == "SolidView"
 
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
             color: UM.Theme.getColor("setting_control_text")
-
+						
             Rectangle
             {
                 id: outsideBuildVolumeSwatch
@@ -158,7 +176,18 @@ Cura.ExpandableComponent
 
         UM.Label
         {
-            text: catalog.i18nc("@label", "Normal geometry")
+            text: catalog.i18nc("@label", "Paint Tool")
+            visible: parent.activeView == "PaintView"
+
+						horizontalAlignment: Text.AlignHCenter
+            height: UM.Theme.getSize("layerview_row").height
+            width: parent.width
+            color: UM.Theme.getColor("setting_control_text")
+        }
+
+        UM.Label
+        {
+            text: catalog.i18nc("@label", "Normal Geometry")
             visible: parent.activeView == "XRayView"
 
             height: UM.Theme.getSize("layerview_row").height
@@ -186,7 +215,7 @@ Cura.ExpandableComponent
 
         UM.Label
         {
-            text: catalog.i18nc("@label", "Geometry error")
+            text: catalog.i18nc("@label", "Geometry Error")
             visible: parent.activeView == "XRayView"
 
             height: UM.Theme.getSize("layerview_row").height
