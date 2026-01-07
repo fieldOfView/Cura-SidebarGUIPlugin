@@ -32,7 +32,8 @@ class SidebarGUIPlugin(Extension):
         preferences.addPreference("sidebargui/settings_window_left", 65535)
         preferences.addPreference("sidebargui/settings_window_top", 65535)
         preferences.addPreference("sidebargui/settings_window_height", 0)
-
+        preferences.addPreference("sidebargui/paint_tool_active", False)
+        
         self._controller = Application.getInstance().getController()
         self._controller.activeStageChanged.connect(self._onStageChanged)
         self._controller.activeViewChanged.connect(self._onViewChanged)
@@ -90,10 +91,6 @@ class SidebarGUIPlugin(Extension):
         active_stage_id = self._controller.getActiveStage().getPluginId()
         active_view = self._controller.getActiveView()
 
-        # Don't change view if PaintTool is active
-        if active_view and active_view.getPluginId() == "PaintTool":
-            return
-
         view_id = ""
 
         if active_stage_id == "PrepareStage":
@@ -116,10 +113,6 @@ class SidebarGUIPlugin(Extension):
 
         active_stage_id = active_stage.getPluginId()
         active_view_id = active_view.getPluginId()
-
-        # Force machine settings update when PaintTool is activated to fix rendering issue
-        if active_view_id == "PaintTool":
-            QTimer.singleShot(0, lambda: Application.getInstance().getMachineManager().forceUpdateAllSettings())
 
         if (
             active_stage_id == "SmartSlicePlugin"
