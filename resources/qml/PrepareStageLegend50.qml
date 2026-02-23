@@ -35,12 +35,22 @@ Cura.ExpandableComponent
         height: implicitHeight
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
+        property string activeView:
+        {
+            var viewString = UM.Controller.activeView + "";
+            return viewString.substr(0, viewString.indexOf("("));
+        }
+
         onActiveViewChanged:
         {
             xrayViewCheckBox.checked = (activeView == "XRayView")
-            xrayViewCheckBox.visible = (activeView != "FastView" && activeView != "SmartSliceView")
+            xrayViewCheckBox.visible = ["PaintView", "FastView", "SmartSliceView"].indexOf(activeView) == -1
             switch(activeView)
             {
+                case "PaintView":
+                    externalViewLabel.visible = true
+                    externalViewLabel.text = catalog.i18nc("@label", "Paint Tool")
+                    break;
                 case "FastView":
                     externalViewLabel.visible = true
                     externalViewLabel.text = catalog.i18nc("@label", "Fast View")
@@ -55,17 +65,12 @@ Cura.ExpandableComponent
             }
         }
 
-        property string activeView:
-        {
-            var viewString = UM.Controller.activeView + "";
-            return viewString.substr(0, viewString.indexOf("("));
-        }
-
         UM.CheckBox
         {
             id: xrayViewCheckBox
             checked: parent.activeView == "XRayView"
             visible: !externalViewLabel.visible
+            enabled: visible
             onClicked:
             {
                 if(checked && parent.activeView != "XRayView")
@@ -85,7 +90,7 @@ Cura.ExpandableComponent
         {
             id: externalViewLabel
 
-            height: UM.Theme.getSize("layerview_row").height
+            height: visible ? UM.Theme.getSize("checkbox").height : 0
             width: parent.width
             color: UM.Theme.getColor("setting_control_text")
         }
