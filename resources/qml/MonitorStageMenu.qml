@@ -24,13 +24,15 @@ Item
 
     Component.onCompleted:
     {
-        is40 = (CuraSDKVersion == "6.0.0")
-        isLE44 = (CuraSDKVersion <= "7.0.0")
-        isLE46 = (CuraSDKVersion <= "7.2.0")
-        isLE410 = (CuraSDKVersion <= "7.6.0")
-        isLE413 = (CuraSDKVersion <= "7.9.0")
-        isLE51 = (CuraSDKVersion <= "8.1.0")
-        isLE52 = (CuraSDKVersion <= "8.2.0")
+        // create a version string that can be easily compared, even with the minor version >= 10
+        var SortableSDKVersion = CuraSDKVersion.replace(/\.(\d)\./g, ".0$1.")
+        is40 = (SortableSDKVersion == "6.00.0")
+        isLE44 = (SortableSDKVersion <= "7.00.0")
+        isLE46 = (SortableSDKVersion <= "7.02.0")
+        isLE410 = (SortableSDKVersion <= "7.06.0")
+        isLE413 = (SortableSDKVersion <= "7.09.0")
+        isLE51 = (SortableSDKVersion <= "8.01.0")
+        isLE52 = (SortableSDKVersion <= "8.02.0")
 
         // adjust message stack position for sidebar
         var messageStack

@@ -34,7 +34,7 @@ Item
     Component.onCompleted:
     {
         // create a version string that can be easily compared, even with the minor version >= 10
-        var SortableSDKVersion = parseInt(CuraSDKVersion.replace(/\.(\d)\./g, ".0$1."))
+        var SortableSDKVersion = CuraSDKVersion.replace(/\.(\d)\./g, ".0$1.")
         is40 = (SortableSDKVersion == "6.00.0")
         isLE43 = (SortableSDKVersion <= "6.03.0")
         isLE44 = (SortableSDKVersion <= "7.00.0")
@@ -44,7 +44,7 @@ Item
         isLE50 = (SortableSDKVersion <= "8.00.0")
         isLE51 = (SortableSDKVersion <= "8.01.0")
         isLE52 = (SortableSDKVersion <= "8.02.0")
-        isLE59 = (SortableSDKVersion <= "8.09.0") && CuraApplication.version != "master" && CuraApplication.version != "dev"
+        isLE59 = (SortableSDKVersion <= "8.09.0")
         if(is40)
         {
              CuraApplication.log("SidebarGUIPlugin patching interface for Cura 4.0")
