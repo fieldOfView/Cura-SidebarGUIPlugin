@@ -45,31 +45,12 @@ Cura.ExpandableComponent
         {
             xrayViewCheckBox.checked = (activeView == "XRayView")
             xrayViewCheckBox.visible = ["PaintView", "FastView", "SmartSliceView"].indexOf(activeView) == -1
-            switch(activeView)
-            {
-                case "PaintView":
-                    externalViewLabel.visible = true
-                    externalViewLabel.text = catalog.i18nc("@label", "Paint Tool")
-                    break;
-                case "FastView":
-                    externalViewLabel.visible = true
-                    externalViewLabel.text = catalog.i18nc("@label", "Fast View")
-                    break;
-                case "SmartSliceView":
-                    externalViewLabel.visible = true
-                    externalViewLabel.text = catalog.i18nc("@label", "Smart Slice")
-                    break;
-                default:
-                    externalViewLabel.visible = false
-                    break;
-            }
         }
 
         UM.CheckBox
         {
             id: xrayViewCheckBox
             checked: parent.activeView == "XRayView"
-            visible: !externalViewLabel.visible
             enabled: visible
             onClicked:
             {
@@ -84,15 +65,6 @@ Cura.ExpandableComponent
             }
             text: catalog.i18nc("@label", "X-Ray view")
             width: parent.width
-        }
-
-        UM.Label
-        {
-            id: externalViewLabel
-
-            height: visible ? UM.Theme.getSize("checkbox").height : 0
-            width: parent.width
-            color: UM.Theme.getColor("setting_control_text")
         }
 
         Item
@@ -211,6 +183,13 @@ Cura.ExpandableComponent
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
             }
+        }
+
+        Item
+        {
+            // hack to ensure the ExpandableComponent expands/contracts correctly
+            height: 1
+            width: parent.width
         }
     }
 }
